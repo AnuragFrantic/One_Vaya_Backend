@@ -1,0 +1,80 @@
+[
+  {
+    "category": "Booking & quotes",
+    "q": "How do I book with OneVaya?",
+    "a": "Send an enquiry, request a quote or build your trip in the Trip Builder. A travel designer reviews your request and sends you a tailored quote. Once you accept, we make the bookings for you.",
+    "order": 0
+  },
+  {
+    "category": "Booking & quotes",
+    "q": "How quickly will I receive a quote?",
+    "a": "Usually within one working day. Complex or group trips can take a little longer.",
+    "order": 1
+  },
+  {
+    "category": "Booking & quotes",
+    "q": "Can I change my quote before accepting?",
+    "a": "Yes. Reply to your quote or message us from My OneVaya and we will update it.",
+    "order": 2
+  },
+  {
+    "category": "Trip Builder",
+    "q": "What does the Trip Builder check?",
+    "a": "It checks every activity against opening days, real time slots, activity duration, travel time between places and booking cut-offs, and suggests valid times when something does not fit.",
+    "order": 3
+  },
+  {
+    "category": "Trip Builder",
+    "q": "Is my Trip Builder plan a confirmed booking?",
+    "a": "No. Your plan is sent as a quote request. Prices and availability are confirmed by your travel designer.",
+    "order": 4
+  },
+  {
+    "category": "Trip Builder",
+    "q": "How does the AI itinerary suggestion work?",
+    "a": "Describe your trip and the AI proposes a day-wise plan using only OneVaya's approved experiences. Every suggestion is validated before it is shown, and you can customise it before requesting a quote.",
+    "order": 5
+  },
+  {
+    "category": "Payments",
+    "q": "Can I pay online?",
+    "a": "Not at the moment. Your travel designer will share payment options with your quote, and every payment we receive is recorded in your account.",
+    "order": 6
+  },
+  {
+    "category": "Payments",
+    "q": "Where can I see my invoices?",
+    "a": "All invoices and payments recorded by OneVaya are shown in My OneVaya under Invoices & payments.",
+    "order": 7
+  },
+  {
+    "category": "Documents & My OneVaya",
+    "q": "Where are my tickets and vouchers?",
+    "a": "Log in to My OneVaya and open your trip. Flight tickets, hotel vouchers, transfer confirmations and sightseeing tickets can be downloaded there.",
+    "order": 8
+  },
+  {
+    "category": "Documents & My OneVaya",
+    "q": "How do I request a change to my booking?",
+    "a": "Open the booking in My OneVaya and choose Request change. Your travel designer will reply in the same place.",
+    "order": 9
+  },
+  {
+    "category": "Documents & My OneVaya",
+    "q": "I forgot my password.",
+    "a": "Use Forgot password on the sign-in page and we will email you a reset link.",
+    "order": 10
+  },
+  {
+    "category": "Visa & insurance",
+    "q": "Can you help with my UAE visa?",
+    "a": "Yes. Our visa assistance team guides you through requirements and documents. Visa decisions are made by the authorities.",
+    "order": 11
+  },
+  {
+    "category": "Visa & insurance",
+    "q": "Do you offer travel insurance?",
+    "a": "Yes, through licensed insurance partners. Ask for cover when you request your quote.",
+    "order": 12
+  }
+]

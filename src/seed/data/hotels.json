@@ -1,0 +1,23 @@
+[
+  {
+    "name": "Downtown Signature Hotel",
+    "stars": 5,
+    "area": "Downtown",
+    "fromAED": 1150,
+    "costAED": 863
+  },
+  {
+    "name": "Marina Waterfront Suites",
+    "stars": 5,
+    "area": "Marina",
+    "fromAED": 980,
+    "costAED": 735
+  },
+  {
+    "name": "Palm Beach Resort & Villas",
+    "stars": 5,
+    "area": "Jumeirah",
+    "fromAED": 1650,
+    "costAED": 1238
+  }
+]
