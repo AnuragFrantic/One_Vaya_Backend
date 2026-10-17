@@ -1,0 +1,174 @@
+[
+  {
+    "slug": "perfect-four-days-in-dubai",
+    "title": "The perfect four days in Dubai",
+    "excerpt": "A balanced plan for first-time visitors, with icons, desert and sea, and time to breathe.",
+    "category": "Itineraries",
+    "image": "https://images.unsplash.com/photo-1597659840241-37e2b9c2f55f?auto=format&fit=crop&w=1600&q=80",
+    "date": "2026-09-18",
+    "readMin": 6,
+    "author": "OneVaya Travel Design",
+    "body": [
+      {
+        "type": "p",
+        "text": "Four days is the sweet spot for a first visit to Dubai. It is long enough to see the icons and slow enough to enjoy them. The secret is timing: the right attraction at the right hour, with sensible travel time in between."
+      },
+      {
+        "type": "h2",
+        "text": "Day 1: Arrive and settle"
+      },
+      {
+        "type": "p",
+        "text": "Keep the first day light. A private transfer, an afternoon by the pool and an evening stroll by the Dubai Fountain are all you need."
+      },
+      {
+        "type": "h2",
+        "text": "Day 2: Downtown icons"
+      },
+      {
+        "type": "p",
+        "text": "Start at the Museum of the Future when it opens at 10:00, then rest before the Burj Khalifa at 17:30 for sunset."
+      },
+      {
+        "type": "h2",
+        "text": "Day 3: The desert"
+      },
+      {
+        "type": "p",
+        "text": "Desert safaris leave at around 15:00 and return at about 21:00, so plan a slow morning and nothing else that evening."
+      },
+      {
+        "type": "h2",
+        "text": "Day 4: Sea and sky"
+      },
+      {
+        "type": "ul",
+        "items": [
+          "Burj Al Arab inside tour around midday",
+          "Afternoon on the beach",
+          "Marina Dinner Cruise at 20:00"
+        ]
+      },
+      {
+        "type": "quote",
+        "text": "The best Dubai trips are not the busiest. They are the best timed."
+      },
+      {
+        "type": "p",
+        "text": "Want this plan with your own dates? Open the Trip Builder and it will check every time for you."
+      }
+    ]
+  },
+  {
+    "slug": "desert-safari-what-to-know",
+    "title": "Desert safari: what to know before you go",
+    "excerpt": "What to wear, what is included and why the evening safari is the one to book.",
+    "category": "Guides",
+    "image": "https://images.unsplash.com/photo-1547234935-80c7145ec969?auto=format&fit=crop&w=1600&q=80",
+    "date": "2026-08-30",
+    "readMin": 4,
+    "author": "OneVaya Travel Design",
+    "body": [
+      {
+        "type": "p",
+        "text": "An evening in the desert is the experience most guests remember. Here is how to make the most of it."
+      },
+      {
+        "type": "h2",
+        "text": "Why evening?"
+      },
+      {
+        "type": "p",
+        "text": "The afternoon heat fades, the light turns golden for the dune drive and dinner is served under the stars."
+      },
+      {
+        "type": "h2",
+        "text": "What to wear"
+      },
+      {
+        "type": "ul",
+        "items": [
+          "Light, comfortable clothing",
+          "Closed shoes or sandals",
+          "A light layer for winter evenings"
+        ]
+      },
+      {
+        "type": "h2",
+        "text": "Who should skip the dune drive"
+      },
+      {
+        "type": "p",
+        "text": "Dune driving is not recommended for pregnant guests or anyone with back problems. Ask us about gentler alternatives."
+      }
+    ]
+  },
+  {
+    "slug": "best-time-to-visit-dubai",
+    "title": "When is the best time to visit Dubai?",
+    "excerpt": "Season by season, from perfect winter days to great-value summer stays.",
+    "category": "Guides",
+    "image": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=80",
+    "date": "2026-07-12",
+    "readMin": 5,
+    "author": "OneVaya Travel Design",
+    "body": [
+      {
+        "type": "p",
+        "text": "Dubai is a year-round destination, but each season offers something different."
+      },
+      {
+        "type": "h2",
+        "text": "October to April"
+      },
+      {
+        "type": "p",
+        "text": "Warm days and pleasant evenings, ideal for outdoor sightseeing, desert trips and beach days."
+      },
+      {
+        "type": "h2",
+        "text": "May to September"
+      },
+      {
+        "type": "p",
+        "text": "Hot outside, but excellent hotel value and world-class indoor attractions. Plan outdoor activities for early mornings and evenings."
+      }
+    ]
+  },
+  {
+    "slug": "planning-a-corporate-offsite-in-dubai",
+    "title": "Planning a corporate offsite in Dubai",
+    "excerpt": "Venues, logistics and team experiences that make an offsite worth the trip.",
+    "category": "Corporate",
+    "image": "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=1600&q=80",
+    "date": "2026-06-04",
+    "readMin": 5,
+    "author": "OneVaya Corporate Team",
+    "body": [
+      {
+        "type": "p",
+        "text": "Dubai is one of the easiest cities in the world to bring a team together, with direct flights from almost everywhere."
+      },
+      {
+        "type": "h2",
+        "text": "Start with the dates"
+      },
+      {
+        "type": "p",
+        "text": "Major exhibitions fill hotels quickly. Check the events calendar before you fix your dates."
+      },
+      {
+        "type": "h2",
+        "text": "Balance work and experience"
+      },
+      {
+        "type": "ul",
+        "items": [
+          "Morning sessions at the hotel",
+          "A desert evening for the whole team",
+          "A free afternoon to recharge"
+        ]
+      }
+    ]
+  }
+]

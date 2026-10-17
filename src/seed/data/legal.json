@@ -1,0 +1,135 @@
+[
+  {
+    "slug": "terms-and-conditions",
+    "title": "Terms & Conditions",
+    "updated": "2026-10-01",
+    "intro": "This page contains placeholder wording for layout purposes. Final legal text will be provided and approved by OneVaya Travel & Tourism.",
+    "sections": [
+      {
+        "heading": "1. About us",
+        "body": [
+          "OneVaya Travel & Tourism (\"OneVaya\", \"we\", \"us\") is a travel company based in Dubai, United Arab Emirates. These terms apply to all enquiries, quotes and bookings made with us."
+        ]
+      },
+      {
+        "heading": "2. Quotes and bookings",
+        "body": [
+          "Information shown on our website, including prices, is indicative. A booking is confirmed only when you accept a written quote and we confirm the booking with the relevant supplier.",
+          "Plans created in the Trip Builder or suggested by our AI assistant are requests, not confirmed bookings."
+        ]
+      },
+      {
+        "heading": "3. Prices and payment",
+        "body": [
+          "Prices are quoted in UAE Dirhams unless stated otherwise. Payment terms are shown on your quote and invoice. Payments received are recorded in your My OneVaya account."
+        ]
+      },
+      {
+        "heading": "4. Travel documents",
+        "body": [
+          "You are responsible for holding a valid passport, visas and any health documents required for your journey."
+        ]
+      },
+      {
+        "heading": "5. Supplier terms",
+        "body": [
+          "Flights, hotels and experiences are provided by third-party suppliers whose own terms and conditions also apply."
+        ]
+      },
+      {
+        "heading": "6. Liability",
+        "body": [
+          "We act with reasonable care and skill in arranging your travel. Our liability is limited as permitted by the laws of the United Arab Emirates."
+        ]
+      },
+      {
+        "heading": "7. Governing law",
+        "body": [
+          "These terms are governed by the laws of the Emirate of Dubai and the federal laws of the United Arab Emirates."
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "privacy-policy",
+    "title": "Privacy Policy",
+    "updated": "2026-10-01",
+    "intro": "This page contains placeholder wording for layout purposes. Final legal text will be provided and approved by OneVaya Travel & Tourism.",
+    "sections": [
+      {
+        "heading": "1. Information we collect",
+        "body": [
+          "Contact details, travel preferences, passport and traveller details needed for bookings, and messages you send us."
+        ]
+      },
+      {
+        "heading": "2. How we use it",
+        "body": [
+          "To respond to enquiries, prepare quotes, make bookings, share travel documents and provide customer support."
+        ]
+      },
+      {
+        "heading": "3. Sharing",
+        "body": [
+          "We share only the information needed with airlines, hotels and partners to fulfil your bookings. We never sell your data."
+        ]
+      },
+      {
+        "heading": "4. Document security",
+        "body": [
+          "Travel documents are stored in private cloud storage and are only available through secure links in your account."
+        ]
+      },
+      {
+        "heading": "5. AI assistant",
+        "body": [
+          "Our AI assistant uses OneVaya-approved information and, for signed-in customers, their own booking details to answer questions."
+        ]
+      },
+      {
+        "heading": "6. Your rights",
+        "body": [
+          "You can ask to access, correct or delete your personal information by contacting us."
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "cancellation-refund-policy",
+    "title": "Cancellation & Refund Policy",
+    "updated": "2026-10-01",
+    "intro": "This page contains placeholder wording for layout purposes. Final legal text will be provided and approved by OneVaya Travel & Tourism.",
+    "sections": [
+      {
+        "heading": "1. Cancelling a booking",
+        "body": [
+          "Cancellation requests must be made in writing or through My OneVaya. Your travel designer will confirm any charges before processing."
+        ]
+      },
+      {
+        "heading": "2. Supplier charges",
+        "body": [
+          "Airlines, hotels and experience providers apply their own cancellation rules. Non-refundable fares and rates cannot be refunded."
+        ]
+      },
+      {
+        "heading": "3. Experiences",
+        "body": [
+          "Most experiences can be cancelled free of charge up to 24–48 hours before the start time. Later cancellations or no-shows may be charged in full."
+        ]
+      },
+      {
+        "heading": "4. Refunds",
+        "body": [
+          "Approved refunds are returned using the original payment method where possible, within the timeframe advised by your travel designer."
+        ]
+      },
+      {
+        "heading": "5. Changes",
+        "body": [
+          "Changes are subject to availability and any supplier fees. Request changes from your booking in My OneVaya."
+        ]
+      }
+    ]
+  }
+]

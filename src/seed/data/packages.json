@@ -1,0 +1,461 @@
+[
+  {
+    "slug": "dubai-signature-escape",
+    "title": "Dubai Signature Escape",
+    "destination": "Dubai",
+    "country": "United Arab Emirates",
+    "region": "UAE",
+    "image": "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1600&q=80",
+    "nights": 4,
+    "priceFromAED": 3950,
+    "tags": [
+      "Bestseller",
+      "Couples"
+    ],
+    "summary": "The city's icons at an easy pace, with a sunset at the top and an evening in the desert.",
+    "bestTime": "October – April",
+    "stay": "Downtown Signature Hotel, 5★",
+    "highlights": [
+      "Burj Khalifa at sunset",
+      "Evening Desert Safari",
+      "Marina Dinner Cruise",
+      "Private airport transfers"
+    ],
+    "itinerary": [
+      {
+        "title": "Arrive in Dubai",
+        "text": "Private transfer to your Downtown hotel. Evening at leisure by the Dubai Fountain."
+      },
+      {
+        "title": "Downtown icons",
+        "text": "Museum of the Future in the morning, Burj Khalifa at the Top at 17:30 for sunset."
+      },
+      {
+        "title": "Into the desert",
+        "text": "Free morning. Evening Desert Safari with dune drive and dinner at camp."
+      },
+      {
+        "title": "Sea & sky",
+        "text": "Burj Al Arab inside tour, then the Marina Dinner Cruise at night."
+      },
+      {
+        "title": "Farewell",
+        "text": "Leisure morning and private transfer to the airport."
+      }
+    ],
+    "inclusions": [
+      "4 nights with breakfast",
+      "Private airport transfers",
+      "Four experiences listed",
+      "Travel designer support"
+    ],
+    "exclusions": [
+      "Flights (can be added)",
+      "Visa and insurance",
+      "Meals not mentioned"
+    ],
+    "order": 0
+  },
+  {
+    "slug": "dubai-family-discovery",
+    "title": "Dubai Family Discovery",
+    "destination": "Dubai",
+    "country": "United Arab Emirates",
+    "region": "UAE",
+    "image": "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1600&q=80",
+    "nights": 5,
+    "priceFromAED": 4650,
+    "tags": [
+      "Family"
+    ],
+    "summary": "Beach resort days balanced with the experiences children remember for years.",
+    "bestTime": "October – April",
+    "stay": "Palm Beach Resort & Villas, 5★",
+    "highlights": [
+      "Beach resort stay",
+      "Museum of the Future",
+      "Desert evening",
+      "Beach camel ride"
+    ],
+    "itinerary": [
+      {
+        "title": "Welcome to Dubai",
+        "text": "Private transfer to the resort. Afternoon by the pool."
+      },
+      {
+        "title": "The future & the view",
+        "text": "Museum of the Future, then Burj Khalifa in the late afternoon."
+      },
+      {
+        "title": "Beach day",
+        "text": "Morning camel ride on the beach, afternoon at the resort."
+      },
+      {
+        "title": "Desert adventure",
+        "text": "Evening Desert Safari with sandboarding and dinner."
+      },
+      {
+        "title": "Your choice",
+        "text": "A free day, or add a scuba discovery dive for older children."
+      },
+      {
+        "title": "Departure",
+        "text": "Breakfast and private transfer to the airport."
+      }
+    ],
+    "inclusions": [
+      "5 nights with half board",
+      "Private transfers",
+      "Listed experiences",
+      "Child seats on request"
+    ],
+    "exclusions": [
+      "Flights",
+      "Visa and insurance"
+    ],
+    "order": 1
+  },
+  {
+    "slug": "dubai-abu-dhabi-grand-tour",
+    "title": "Dubai & Abu Dhabi Grand Tour",
+    "destination": "Dubai & Abu Dhabi",
+    "country": "United Arab Emirates",
+    "region": "UAE",
+    "image": "https://images.unsplash.com/photo-1512632578888-169bbbc64f33?auto=format&fit=crop&w=1600&q=80",
+    "nights": 6,
+    "priceFromAED": 5900,
+    "tags": [
+      "Culture"
+    ],
+    "summary": "Two cities, one journey, from the Grand Mosque to the tallest tower on earth.",
+    "bestTime": "November – March",
+    "stay": "Downtown Signature Hotel, 5★",
+    "highlights": [
+      "Sheikh Zayed Grand Mosque",
+      "Dubai Frame",
+      "Burj Khalifa",
+      "Desert Safari"
+    ],
+    "itinerary": [
+      {
+        "title": "Arrival",
+        "text": "Private transfer to your hotel."
+      },
+      {
+        "title": "Old & new Dubai",
+        "text": "Dubai Frame in the morning, Burj Khalifa at sunset."
+      },
+      {
+        "title": "Abu Dhabi",
+        "text": "Full-day private tour of the capital, including the Grand Mosque."
+      },
+      {
+        "title": "Desert evening",
+        "text": "Free morning, Evening Desert Safari."
+      },
+      {
+        "title": "Jumeirah",
+        "text": "Burj Al Arab tour and beach afternoon."
+      },
+      {
+        "title": "Marina night",
+        "text": "Leisure day ending with the Marina Dinner Cruise."
+      },
+      {
+        "title": "Departure",
+        "text": "Private transfer to the airport."
+      }
+    ],
+    "inclusions": [
+      "6 nights with breakfast",
+      "All transfers",
+      "Private Abu Dhabi tour",
+      "Listed experiences"
+    ],
+    "exclusions": [
+      "Flights",
+      "Visa and insurance"
+    ],
+    "order": 2
+  },
+  {
+    "slug": "maldives-overwater-retreat",
+    "title": "Maldives Overwater Retreat",
+    "destination": "Maldives",
+    "country": "Maldives",
+    "region": "Indian Ocean",
+    "image": "https://images.unsplash.com/photo-1514282401047-d79a71a590e8?auto=format&fit=crop&w=1600&q=80",
+    "nights": 5,
+    "priceFromAED": 9800,
+    "tags": [
+      "Honeymoon",
+      "Luxury"
+    ],
+    "summary": "An overwater villa, a quiet lagoon and nothing to do but rest.",
+    "bestTime": "November – April",
+    "stay": "Overwater villa, 5★ resort",
+    "highlights": [
+      "Overwater villa",
+      "Seaplane or speedboat transfer",
+      "Sunset cruise",
+      "Spa credit"
+    ],
+    "itinerary": [
+      {
+        "title": "Arrive in Malé",
+        "text": "Seaplane or speedboat to your island resort."
+      },
+      {
+        "title": "Lagoon days",
+        "text": "Snorkelling, spa and slow mornings over three days."
+      },
+      {
+        "title": "Sunset cruise",
+        "text": "An evening cruise with a chance to spot dolphins."
+      },
+      {
+        "title": "Departure",
+        "text": "Return transfer to Malé for your flight."
+      }
+    ],
+    "inclusions": [
+      "5 nights half board",
+      "Resort transfers",
+      "Sunset cruise",
+      "Spa credit"
+    ],
+    "exclusions": [
+      "International flights",
+      "Insurance"
+    ],
+    "order": 3
+  },
+  {
+    "slug": "bali-island-soul",
+    "title": "Bali Island Soul",
+    "destination": "Bali",
+    "country": "Indonesia",
+    "region": "Asia",
+    "image": "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=1600&q=80",
+    "nights": 6,
+    "priceFromAED": 6400,
+    "tags": [
+      "Culture",
+      "Wellness"
+    ],
+    "summary": "Temples, rice terraces and the slow rhythm of Ubud, ending on the coast.",
+    "bestTime": "April – October",
+    "stay": "Ubud villa & Seminyak resort",
+    "highlights": [
+      "Ubud rice terraces",
+      "Lake temple visit",
+      "Balinese cooking class",
+      "Beach finale"
+    ],
+    "itinerary": [
+      {
+        "title": "Arrive in Bali",
+        "text": "Private transfer to Ubud."
+      },
+      {
+        "title": "Ubud & terraces",
+        "text": "Rice terraces and village walks with a local guide."
+      },
+      {
+        "title": "Temples",
+        "text": "Lake temple and mountain views."
+      },
+      {
+        "title": "Cooking & wellness",
+        "text": "Balinese cooking class and a spa afternoon."
+      },
+      {
+        "title": "To the coast",
+        "text": "Transfer to Seminyak for two beach days."
+      },
+      {
+        "title": "Departure",
+        "text": "Transfer to the airport."
+      }
+    ],
+    "inclusions": [
+      "6 nights with breakfast",
+      "Private transfers",
+      "Guided touring"
+    ],
+    "exclusions": [
+      "International flights",
+      "Visa on arrival fee"
+    ],
+    "order": 4
+  },
+  {
+    "slug": "paris-in-style",
+    "title": "Paris in Style",
+    "destination": "Paris",
+    "country": "France",
+    "region": "Europe",
+    "image": "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=1600&q=80",
+    "nights": 5,
+    "priceFromAED": 8200,
+    "tags": [
+      "City",
+      "Couples"
+    ],
+    "summary": "Museums, cafés and the Seine at dusk, from a boutique hotel in the heart of the city.",
+    "bestTime": "April – June, September – October",
+    "stay": "Boutique hotel, Saint-Germain",
+    "highlights": [
+      "Louvre with a private guide",
+      "Seine dinner cruise",
+      "Versailles day trip"
+    ],
+    "itinerary": [
+      {
+        "title": "Bonjour Paris",
+        "text": "Private transfer to your hotel."
+      },
+      {
+        "title": "The Louvre",
+        "text": "Private guided visit, evening Seine cruise."
+      },
+      {
+        "title": "Versailles",
+        "text": "Day trip to the palace and gardens."
+      },
+      {
+        "title": "Montmartre",
+        "text": "Morning walk and an afternoon at leisure."
+      },
+      {
+        "title": "Departure",
+        "text": "Transfer to the airport."
+      }
+    ],
+    "inclusions": [
+      "5 nights with breakfast",
+      "Private transfers",
+      "Guided visits"
+    ],
+    "exclusions": [
+      "Flights",
+      "Schengen visa"
+    ],
+    "order": 5
+  },
+  {
+    "slug": "santorini-sunsets",
+    "title": "Santorini Sunsets",
+    "destination": "Santorini",
+    "country": "Greece",
+    "region": "Europe",
+    "image": "https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=1600&q=80",
+    "nights": 5,
+    "priceFromAED": 7600,
+    "tags": [
+      "Honeymoon"
+    ],
+    "summary": "Cliffside suites, caldera views and the famous Oia sunset.",
+    "bestTime": "May – October",
+    "stay": "Cliffside suite, Imerovigli",
+    "highlights": [
+      "Caldera-view suite",
+      "Catamaran cruise",
+      "Wine tasting"
+    ],
+    "itinerary": [
+      {
+        "title": "Arrive",
+        "text": "Transfer to your cliffside suite."
+      },
+      {
+        "title": "Catamaran",
+        "text": "Caldera cruise with swimming stops and dinner."
+      },
+      {
+        "title": "Villages",
+        "text": "Oia and Pyrgos, with wine tasting."
+      },
+      {
+        "title": "At leisure",
+        "text": "Beaches or simply your terrace."
+      },
+      {
+        "title": "Departure",
+        "text": "Transfer to the airport."
+      }
+    ],
+    "inclusions": [
+      "5 nights with breakfast",
+      "Transfers",
+      "Catamaran cruise"
+    ],
+    "exclusions": [
+      "Flights",
+      "Schengen visa"
+    ],
+    "order": 6
+  },
+  {
+    "slug": "japan-kyoto-tokyo",
+    "title": "Japan: Kyoto & Tokyo",
+    "destination": "Kyoto & Tokyo",
+    "country": "Japan",
+    "region": "Asia",
+    "image": "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=1600&q=80",
+    "nights": 7,
+    "priceFromAED": 11500,
+    "tags": [
+      "Culture"
+    ],
+    "summary": "Ancient temples and modern Tokyo, linked by the bullet train.",
+    "bestTime": "March – May, October – November",
+    "stay": "Ryokan in Kyoto, hotel in Tokyo",
+    "highlights": [
+      "Gion and Higashiyama",
+      "Night in a ryokan",
+      "Bullet train",
+      "Tokyo with a guide"
+    ],
+    "itinerary": [
+      {
+        "title": "Arrive in Kyoto",
+        "text": "Transfer to your ryokan."
+      },
+      {
+        "title": "Temples of Kyoto",
+        "text": "Higashiyama and Gion with a guide."
+      },
+      {
+        "title": "Arashiyama",
+        "text": "Bamboo grove and riverside walks."
+      },
+      {
+        "title": "Bullet train",
+        "text": "Travel to Tokyo and explore Shibuya."
+      },
+      {
+        "title": "Tokyo",
+        "text": "Guided day across old and new neighbourhoods."
+      },
+      {
+        "title": "At leisure",
+        "text": "Shopping, museums or a day trip."
+      },
+      {
+        "title": "Departure",
+        "text": "Transfer to the airport."
+      }
+    ],
+    "inclusions": [
+      "7 nights",
+      "Rail pass",
+      "Guided days"
+    ],
+    "exclusions": [
+      "International flights",
+      "Visa if required"
+    ],
+    "order": 7
+  }
+]

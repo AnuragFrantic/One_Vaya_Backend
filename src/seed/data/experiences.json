@@ -1,0 +1,439 @@
+[
+  {
+    "slug": "burj-khalifa-at-the-top",
+    "name": "Burj Khalifa – At the Top",
+    "category": "Attractions",
+    "area": "Downtown",
+    "image": "https://images.unsplash.com/photo-1580674684081-7617fbf3d745?auto=format&fit=crop&w=1600&q=80",
+    "summary": "The view from the world's tallest building, ideally at sunset.",
+    "description": "Rise to the observation decks of the Burj Khalifa for a view across the city, the desert and the Gulf. The 17:30 sunset slot is the most requested, so we recommend booking early.",
+    "durationMin": 90,
+    "slots": [
+      "09:00",
+      "11:00",
+      "15:00",
+      "17:30",
+      "19:30"
+    ],
+    "openDays": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "openingTime": "08:30",
+    "closingTime": "23:00",
+    "priceAED": 189,
+    "cutoffHours": 24,
+    "note": "Sunset slot 17:30 is the most requested.",
+    "highlights": [
+      "Observation decks on levels 124 and 125",
+      "Sunset and night views",
+      "Multimedia story of the tower"
+    ],
+    "inclusions": [
+      "Entry ticket for your chosen slot",
+      "Fast access to the lifts"
+    ],
+    "exclusions": [
+      "Hotel transfers (can be added)",
+      "Food and drinks"
+    ],
+    "goodToKnow": [
+      "Arrive 15 minutes before your slot",
+      "Security screening at entry",
+      "Suitable for all ages"
+    ],
+    "costAED": 123,
+    "order": 0
+  },
+  {
+    "slug": "evening-desert-safari",
+    "name": "Evening Desert Safari",
+    "category": "Desert",
+    "area": "Desert",
+    "image": "https://images.unsplash.com/photo-1547234935-80c7145ec969?auto=format&fit=crop&w=1600&q=80",
+    "summary": "Dune drive, sunset over the sands and dinner under the stars.",
+    "description": "Leave the city in the afternoon for a drive across the red dunes, watch the sun set over the desert, then enjoy a barbecue dinner and entertainment at a desert camp.",
+    "durationMin": 360,
+    "slots": [
+      "15:00"
+    ],
+    "openDays": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "openingTime": "15:00",
+    "closingTime": "21:00",
+    "priceAED": 250,
+    "cutoffHours": 12,
+    "note": "Evening only. Pick-up at 15:00, return around 21:00.",
+    "highlights": [
+      "Dune drive in a 4x4",
+      "Sunset photo stop",
+      "Barbecue dinner and live shows"
+    ],
+    "inclusions": [
+      "Hotel pick-up and drop-off",
+      "Dinner and soft drinks",
+      "Camel ride and sandboarding"
+    ],
+    "exclusions": [
+      "Quad biking (optional extra)",
+      "Gratuities"
+    ],
+    "goodToKnow": [
+      "Not recommended for pregnant guests",
+      "Wear comfortable clothes",
+      "Evening departures only"
+    ],
+    "costAED": 163,
+    "order": 1
+  },
+  {
+    "slug": "marina-dinner-cruise",
+    "name": "Marina Dinner Cruise",
+    "category": "Water",
+    "area": "Marina",
+    "image": "https://images.unsplash.com/photo-1559599746-8823b38544c6?auto=format&fit=crop&w=1600&q=80",
+    "summary": "A relaxed evening cruise past the lights of Dubai Marina.",
+    "description": "Glide through Dubai Marina on a glass-topped dhow as the towers light up around you, with an international buffet dinner on board.",
+    "durationMin": 120,
+    "slots": [
+      "20:00",
+      "20:30"
+    ],
+    "openDays": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "openingTime": "20:00",
+    "closingTime": "22:30",
+    "priceAED": 299,
+    "cutoffHours": 24,
+    "note": "Night departures only.",
+    "highlights": [
+      "Marina skyline at night",
+      "International buffet",
+      "Live music on board"
+    ],
+    "inclusions": [
+      "Two-hour cruise",
+      "Buffet dinner and soft drinks"
+    ],
+    "exclusions": [
+      "Transfers (can be added)",
+      "Alcoholic beverages"
+    ],
+    "goodToKnow": [
+      "Smart casual dress",
+      "Boarding starts 30 minutes before departure"
+    ],
+    "costAED": 194,
+    "order": 2
+  },
+  {
+    "slug": "museum-of-the-future",
+    "name": "Museum of the Future",
+    "category": "Culture",
+    "area": "Downtown",
+    "image": "https://images.unsplash.com/photo-1526495124232-a04e1849168c?auto=format&fit=crop&w=1600&q=80",
+    "summary": "Immersive exhibitions imagining life in the decades ahead.",
+    "description": "Explore space, ecology and wellbeing in one of the world's most striking buildings. A favourite for families and design lovers alike.",
+    "durationMin": 120,
+    "slots": [
+      "10:00",
+      "11:00",
+      "12:00",
+      "13:00",
+      "14:00",
+      "15:00"
+    ],
+    "openDays": [
+      0,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "openingTime": "10:00",
+    "closingTime": "17:00",
+    "priceAED": 149,
+    "cutoffHours": 24,
+    "note": "Open 10:00 AM – 5:00 PM. Closed on Mondays.",
+    "highlights": [
+      "Immersive floors",
+      "Iconic architecture",
+      "Children's discovery zone"
+    ],
+    "inclusions": [
+      "Timed entry ticket"
+    ],
+    "exclusions": [
+      "Transfers",
+      "Food and drinks"
+    ],
+    "goodToKnow": [
+      "Closed on Mondays",
+      "Last entry 15:00",
+      "Allow around two hours"
+    ],
+    "costAED": 97,
+    "order": 3
+  },
+  {
+    "slug": "burj-al-arab-inside-tour",
+    "name": "Burj Al Arab Inside Tour",
+    "category": "Attractions",
+    "area": "Jumeirah",
+    "image": "https://images.unsplash.com/photo-1546412414-e1885259563a?auto=format&fit=crop&w=1600&q=80",
+    "summary": "Step inside the sail-shaped icon of Jumeirah.",
+    "description": "A guided tour of the Burj Al Arab's grand atrium and a royal suite, with stories of how the hotel was built.",
+    "durationMin": 90,
+    "slots": [
+      "10:00",
+      "12:00",
+      "14:00",
+      "16:00"
+    ],
+    "openDays": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "openingTime": "10:00",
+    "closingTime": "17:30",
+    "priceAED": 349,
+    "cutoffHours": 48,
+    "note": "Tours run every two hours.",
+    "highlights": [
+      "Grand atrium",
+      "Royal suite visit",
+      "Guided storytelling"
+    ],
+    "inclusions": [
+      "Guided tour",
+      "Welcome drink"
+    ],
+    "exclusions": [
+      "Transfers",
+      "Dining at hotel restaurants"
+    ],
+    "goodToKnow": [
+      "Booking closes 48 hours ahead",
+      "Photo ID required"
+    ],
+    "costAED": 227,
+    "order": 4
+  },
+  {
+    "slug": "abu-dhabi-city-tour",
+    "name": "Abu Dhabi City Tour",
+    "category": "Culture",
+    "area": "Abu Dhabi",
+    "image": "https://images.unsplash.com/photo-1512632578888-169bbbc64f33?auto=format&fit=crop&w=1600&q=80",
+    "summary": "A full day in the capital, including the Sheikh Zayed Grand Mosque.",
+    "description": "Travel to Abu Dhabi with a private guide to visit the Sheikh Zayed Grand Mosque, the Corniche and Qasr Al Watan, with lunch along the way.",
+    "durationMin": 480,
+    "slots": [
+      "08:00"
+    ],
+    "openDays": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      6
+    ],
+    "openingTime": "08:00",
+    "closingTime": "17:00",
+    "priceAED": 320,
+    "cutoffHours": 48,
+    "note": "Full day. Not available on Fridays.",
+    "highlights": [
+      "Sheikh Zayed Grand Mosque",
+      "Qasr Al Watan",
+      "Corniche drive"
+    ],
+    "inclusions": [
+      "Return transfers from Dubai",
+      "Guide",
+      "Lunch"
+    ],
+    "exclusions": [
+      "Entry to optional attractions"
+    ],
+    "goodToKnow": [
+      "Modest dress required at the mosque",
+      "Not available on Fridays"
+    ],
+    "costAED": 208,
+    "order": 5
+  },
+  {
+    "slug": "dubai-frame",
+    "name": "Dubai Frame",
+    "category": "Attractions",
+    "area": "Old Dubai",
+    "image": "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1600&q=80",
+    "summary": "Old Dubai on one side, the new city on the other.",
+    "description": "Walk across the glass-floored bridge 150 metres up, framed between Dubai's past and future.",
+    "durationMin": 60,
+    "slots": [
+      "10:00",
+      "11:00",
+      "12:00",
+      "13:00",
+      "14:00",
+      "15:00",
+      "16:00",
+      "17:00",
+      "18:00",
+      "19:00"
+    ],
+    "openDays": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "openingTime": "09:00",
+    "closingTime": "21:00",
+    "priceAED": 60,
+    "cutoffHours": 12,
+    "note": "Hourly slots, 10:00 – 19:00.",
+    "highlights": [
+      "Glass-floor sky bridge",
+      "Old and new Dubai views"
+    ],
+    "inclusions": [
+      "Entry ticket"
+    ],
+    "exclusions": [
+      "Transfers"
+    ],
+    "goodToKnow": [
+      "Allow one hour",
+      "Great at golden hour"
+    ],
+    "costAED": 39,
+    "order": 6
+  },
+  {
+    "slug": "discover-scuba-dive",
+    "name": "Discover Scuba Dive",
+    "category": "Water",
+    "area": "Jumeirah",
+    "image": "https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1600&q=80",
+    "summary": "A first dive with a certified instructor. No experience needed.",
+    "description": "Learn the basics in the pool, then head out for a shallow sea dive with your instructor, surrounded by marine life.",
+    "durationMin": 180,
+    "slots": [
+      "09:00",
+      "13:00"
+    ],
+    "openDays": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "openingTime": "09:00",
+    "closingTime": "17:00",
+    "priceAED": 450,
+    "cutoffHours": 48,
+    "note": "Morning and afternoon sessions.",
+    "highlights": [
+      "Certified instructor",
+      "Pool session first",
+      "Sea dive"
+    ],
+    "inclusions": [
+      "All equipment",
+      "Instructor",
+      "Photos"
+    ],
+    "exclusions": [
+      "Transfers"
+    ],
+    "goodToKnow": [
+      "Minimum age 10",
+      "Medical form required",
+      "No flying within 24 hours after diving"
+    ],
+    "costAED": 293,
+    "order": 7
+  },
+  {
+    "slug": "jumeirah-camel-ride",
+    "name": "Beach Camel Ride & Skyline",
+    "category": "Leisure",
+    "area": "Jumeirah",
+    "image": "https://images.unsplash.com/photo-1528702748617-c64d49f918af?auto=format&fit=crop&w=1600&q=80",
+    "summary": "A gentle camel ride on the sand with the city skyline behind.",
+    "description": "A short, relaxed camel ride along the beach, perfect for families and photos with the Dubai skyline.",
+    "durationMin": 45,
+    "slots": [
+      "08:00",
+      "09:00",
+      "16:00",
+      "17:00"
+    ],
+    "openDays": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "openingTime": "08:00",
+    "closingTime": "18:00",
+    "priceAED": 95,
+    "cutoffHours": 12,
+    "note": "Morning and late afternoon only.",
+    "highlights": [
+      "Family friendly",
+      "Skyline photos"
+    ],
+    "inclusions": [
+      "Camel ride",
+      "Handler"
+    ],
+    "exclusions": [
+      "Transfers"
+    ],
+    "goodToKnow": [
+      "Cooler hours only",
+      "Children must ride with an adult"
+    ],
+    "costAED": 62,
+    "order": 8
+  }
+]

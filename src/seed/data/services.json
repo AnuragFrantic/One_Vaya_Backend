@@ -1,0 +1,622 @@
+[
+  {
+    "slug": "flights",
+    "title": "Flights",
+    "icon": "flights",
+    "group": "travel",
+    "short": "Preferred fares, seats and routes arranged by your travel designer.",
+    "heroTitle": "Flights, arranged with care.",
+    "intro": "From a quick regional hop to a long-haul business class journey, our team finds the right routing, fare and seat for you, then books it directly with the airline. Your e-tickets appear in My OneVaya the moment they are issued.",
+    "image": "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=1600&q=80",
+    "highlights": [
+      {
+        "title": "Every cabin",
+        "text": "Economy, premium economy, business and first, on leading airlines."
+      },
+      {
+        "title": "Smart routing",
+        "text": "Direct flights or well-timed connections that suit your plans."
+      },
+      {
+        "title": "Seats & extras",
+        "text": "Seat selection, extra baggage, meals and special assistance."
+      },
+      {
+        "title": "Changes handled",
+        "text": "Need to change a date? Request it from inside your booking."
+      }
+    ],
+    "includes": [
+      "One-way, return and multi-city",
+      "Family and group bookings",
+      "Special assistance requests",
+      "E-tickets in My OneVaya"
+    ],
+    "process": [
+      {
+        "title": "Tell us what you need",
+        "text": "Send an enquiry or build your plan. It reaches a travel designer straight away."
+      },
+      {
+        "title": "Receive a tailored quote",
+        "text": "We prepare an itemised, branded quote with clear pricing."
+      },
+      {
+        "title": "Confirm & relax",
+        "text": "Accept the quote and we book directly with airlines, hotels and partners."
+      },
+      {
+        "title": "Everything in My OneVaya",
+        "text": "Tickets, vouchers and your itinerary appear in your account."
+      }
+    ],
+    "faqs": [
+      {
+        "q": "Do you book flights online instantly?",
+        "a": "No. Every flight is booked by a OneVaya travel designer directly with the airline, so we can advise on the best option. You receive a quote first and confirm before we book."
+      },
+      {
+        "q": "Where will I find my e-ticket?",
+        "a": "Once issued, your e-ticket PDF is uploaded to your booking in My OneVaya and we also notify you by email."
+      }
+    ],
+    "enquiry": "flight",
+    "order": 0
+  },
+  {
+    "slug": "hotels",
+    "title": "Hotels",
+    "icon": "hotels",
+    "group": "travel",
+    "short": "Handpicked stays, from city icons to private beach villas.",
+    "heroTitle": "Stays worth remembering.",
+    "intro": "We know Dubai's hotels and resorts personally. Tell us how you like to travel and we recommend the right stay, whether it is a skyline suite in Downtown, a family resort on the beach or a private villa on the Palm.",
+    "image": "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=1600&q=80",
+    "highlights": [
+      {
+        "title": "Curated selection",
+        "text": "Hotels we know and trust, chosen for service and location."
+      },
+      {
+        "title": "The right room",
+        "text": "Views, connecting rooms, accessibility and special occasions."
+      },
+      {
+        "title": "Worldwide",
+        "text": "Hotels and resorts in Dubai and destinations around the world."
+      },
+      {
+        "title": "Voucher in your account",
+        "text": "Your hotel voucher is always one tap away."
+      }
+    ],
+    "includes": [
+      "City hotels and beach resorts",
+      "Serviced apartments and villas",
+      "Celebration arrangements",
+      "Hotel voucher in My OneVaya"
+    ],
+    "process": [
+      {
+        "title": "Tell us what you need",
+        "text": "Send an enquiry or build your plan. It reaches a travel designer straight away."
+      },
+      {
+        "title": "Receive a tailored quote",
+        "text": "We prepare an itemised, branded quote with clear pricing."
+      },
+      {
+        "title": "Confirm & relax",
+        "text": "Accept the quote and we book directly with airlines, hotels and partners."
+      },
+      {
+        "title": "Everything in My OneVaya",
+        "text": "Tickets, vouchers and your itinerary appear in your account."
+      }
+    ],
+    "faqs": [
+      {
+        "q": "Can you combine a hotel with flights and transfers?",
+        "a": "Yes. Most guests ask us for a complete trip. Use the Trip Builder or tell us everything in one enquiry."
+      },
+      {
+        "q": "Can I request a specific room type?",
+        "a": "Absolutely. Add it to your special requirements and we will request it with the hotel."
+      }
+    ],
+    "enquiry": "hotel",
+    "order": 1
+  },
+  {
+    "slug": "airport-transfers",
+    "title": "Airport Transfers",
+    "icon": "transfers",
+    "group": "travel",
+    "short": "Chauffeured arrivals and departures, timed to your flight.",
+    "heroTitle": "Arrive calmly. Leave easily.",
+    "intro": "A chauffeur waiting at arrivals, a car sized for your family and luggage, and departures timed to your flight. Private and shared transfers across Dubai and the UAE.",
+    "image": "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1600&q=80",
+    "highlights": [
+      {
+        "title": "Meet & greet",
+        "text": "Your driver waits at arrivals with your name."
+      },
+      {
+        "title": "Right vehicle",
+        "text": "Sedans, SUVs, vans and luxury cars."
+      },
+      {
+        "title": "Flight tracking",
+        "text": "Pick-ups adjusted to your actual landing time."
+      },
+      {
+        "title": "Across the UAE",
+        "text": "Dubai, Abu Dhabi, Sharjah and beyond."
+      }
+    ],
+    "includes": [
+      "Airport, hotel and intercity transfers",
+      "Child seats on request",
+      "Hourly chauffeur service",
+      "Confirmation in My OneVaya"
+    ],
+    "process": [
+      {
+        "title": "Tell us what you need",
+        "text": "Send an enquiry or build your plan. It reaches a travel designer straight away."
+      },
+      {
+        "title": "Receive a tailored quote",
+        "text": "We prepare an itemised, branded quote with clear pricing."
+      },
+      {
+        "title": "Confirm & relax",
+        "text": "Accept the quote and we book directly with airlines, hotels and partners."
+      },
+      {
+        "title": "Everything in My OneVaya",
+        "text": "Tickets, vouchers and your itinerary appear in your account."
+      }
+    ],
+    "faqs": [
+      {
+        "q": "What if my flight is delayed?",
+        "a": "Share your flight number and our partner tracks it, so your driver is there when you land."
+      },
+      {
+        "q": "Can I add child seats?",
+        "a": "Yes, add the number and ages of children in your request."
+      }
+    ],
+    "enquiry": "transfer",
+    "order": 2
+  },
+  {
+    "slug": "dubai-sightseeing",
+    "title": "Dubai Sightseeing",
+    "icon": "sightseeing",
+    "group": "travel",
+    "short": "Dubai's landmarks, booked at the right time of day.",
+    "heroTitle": "See Dubai at its best.",
+    "intro": "Burj Khalifa at sunset, the desert in the evening, the Marina by night. We plan your sightseeing around real opening hours, time slots and travel time, so your days flow without rushing.",
+    "image": "https://images.unsplash.com/photo-1580674684081-7617fbf3d745?auto=format&fit=crop&w=1600&q=80",
+    "highlights": [
+      {
+        "title": "Iconic landmarks",
+        "text": "Burj Khalifa, Museum of the Future, Dubai Frame and more."
+      },
+      {
+        "title": "Perfect timing",
+        "text": "Slots chosen for light, crowds and comfort."
+      },
+      {
+        "title": "Private or shared",
+        "text": "Tours with a private guide or in small groups."
+      },
+      {
+        "title": "Tickets in one place",
+        "text": "Every sightseeing ticket in My OneVaya."
+      }
+    ],
+    "includes": [
+      "City tours and landmarks",
+      "Desert and water experiences",
+      "Abu Dhabi day trips",
+      "Tickets in My OneVaya"
+    ],
+    "process": [
+      {
+        "title": "Tell us what you need",
+        "text": "Send an enquiry or build your plan. It reaches a travel designer straight away."
+      },
+      {
+        "title": "Receive a tailored quote",
+        "text": "We prepare an itemised, branded quote with clear pricing."
+      },
+      {
+        "title": "Confirm & relax",
+        "text": "Accept the quote and we book directly with airlines, hotels and partners."
+      },
+      {
+        "title": "Everything in My OneVaya",
+        "text": "Tickets, vouchers and your itinerary appear in your account."
+      }
+    ],
+    "faqs": [
+      {
+        "q": "Can I choose my time slot?",
+        "a": "Yes. In the Trip Builder you choose a preferred time for each activity. We validate it against the attraction's real slots."
+      },
+      {
+        "q": "What if an attraction is closed that day?",
+        "a": "The Trip Builder warns you and suggests another day or time before you send your request."
+      }
+    ],
+    "enquiry": "general",
+    "order": 3
+  },
+  {
+    "slug": "visa-assistance",
+    "title": "Visa Assistance",
+    "icon": "visa",
+    "group": "specialist",
+    "short": "Guidance and support with UAE and international visas.",
+    "heroTitle": "Visas, made simpler.",
+    "intro": "We guide you through the visa requirements for the UAE and other destinations, help you prepare the right documents and keep you updated on progress.",
+    "image": "https://images.unsplash.com/photo-1530521954074-e64f6810b32d?auto=format&fit=crop&w=1600&q=80",
+    "highlights": [
+      {
+        "title": "UAE visit visas",
+        "text": "Tourist and visit visas for travellers to the UAE."
+      },
+      {
+        "title": "Outbound visas",
+        "text": "Guidance for residents travelling abroad."
+      },
+      {
+        "title": "Document checklist",
+        "text": "A clear list of what you need, before you apply."
+      },
+      {
+        "title": "Progress updates",
+        "text": "Status updates by email and in your account."
+      }
+    ],
+    "includes": [
+      "Eligibility guidance",
+      "Document checklist",
+      "Application support",
+      "Status updates"
+    ],
+    "process": [
+      {
+        "title": "Tell us what you need",
+        "text": "Send an enquiry or build your plan. It reaches a travel designer straight away."
+      },
+      {
+        "title": "Receive a tailored quote",
+        "text": "We prepare an itemised, branded quote with clear pricing."
+      },
+      {
+        "title": "Confirm & relax",
+        "text": "Accept the quote and we book directly with airlines, hotels and partners."
+      },
+      {
+        "title": "Everything in My OneVaya",
+        "text": "Tickets, vouchers and your itinerary appear in your account."
+      }
+    ],
+    "faqs": [
+      {
+        "q": "Do you guarantee visa approval?",
+        "a": "No. Visa decisions are made solely by the relevant authorities. We help you prepare a complete application."
+      },
+      {
+        "q": "How long does a UAE visa take?",
+        "a": "Timelines vary by nationality and visa type. We advise you when you enquire."
+      }
+    ],
+    "enquiry": "visa",
+    "order": 4
+  },
+  {
+    "slug": "travel-insurance",
+    "title": "Travel Insurance",
+    "icon": "insurance",
+    "group": "specialist",
+    "short": "Cover for medical, cancellation and baggage, arranged with your trip.",
+    "heroTitle": "Travel with peace of mind.",
+    "intro": "Add travel insurance to your journey for medical emergencies, cancellations, delays and baggage. We arrange suitable cover alongside your booking.",
+    "image": "https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=1600&q=80",
+    "highlights": [
+      {
+        "title": "Medical cover",
+        "text": "Emergency medical expenses while you travel."
+      },
+      {
+        "title": "Cancellation",
+        "text": "Cover for eligible cancellations and curtailment."
+      },
+      {
+        "title": "Baggage & delay",
+        "text": "Lost baggage and travel delay benefits."
+      },
+      {
+        "title": "Family & annual",
+        "text": "Single trip, family and annual multi-trip options."
+      }
+    ],
+    "includes": [
+      "Single trip and annual plans",
+      "Family cover",
+      "Policy document in My OneVaya",
+      "Help with claims guidance"
+    ],
+    "process": [
+      {
+        "title": "Tell us what you need",
+        "text": "Send an enquiry or build your plan. It reaches a travel designer straight away."
+      },
+      {
+        "title": "Receive a tailored quote",
+        "text": "We prepare an itemised, branded quote with clear pricing."
+      },
+      {
+        "title": "Confirm & relax",
+        "text": "Accept the quote and we book directly with airlines, hotels and partners."
+      },
+      {
+        "title": "Everything in My OneVaya",
+        "text": "Tickets, vouchers and your itinerary appear in your account."
+      }
+    ],
+    "faqs": [
+      {
+        "q": "Who provides the insurance?",
+        "a": "Policies are issued by licensed insurance partners. Full terms are shared with your quote."
+      }
+    ],
+    "enquiry": "insurance",
+    "order": 5
+  },
+  {
+    "slug": "corporate-travel",
+    "title": "Corporate Travel",
+    "icon": "corporate",
+    "group": "specialist",
+    "short": "Reliable travel management for teams and executives.",
+    "heroTitle": "Business travel, handled.",
+    "intro": "A dedicated team for your company's flights, hotels and transfers, with consolidated invoicing and reporting. We look after executives, project teams and visiting partners.",
+    "image": "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=1600&q=80",
+    "highlights": [
+      {
+        "title": "Dedicated designer",
+        "text": "One contact who knows your travel policy."
+      },
+      {
+        "title": "Consolidated invoicing",
+        "text": "Clear invoices and records for your finance team."
+      },
+      {
+        "title": "Executive service",
+        "text": "Chauffeurs, lounges and priority changes."
+      },
+      {
+        "title": "Visiting partners",
+        "text": "Arrivals, stays and hospitality for your guests."
+      }
+    ],
+    "includes": [
+      "Flights, hotels and transfers",
+      "Meetings and offsites",
+      "Monthly statements",
+      "Travel policy alignment"
+    ],
+    "process": [
+      {
+        "title": "Tell us what you need",
+        "text": "Send an enquiry or build your plan. It reaches a travel designer straight away."
+      },
+      {
+        "title": "Receive a tailored quote",
+        "text": "We prepare an itemised, branded quote with clear pricing."
+      },
+      {
+        "title": "Confirm & relax",
+        "text": "Accept the quote and we book directly with airlines, hotels and partners."
+      },
+      {
+        "title": "Everything in My OneVaya",
+        "text": "Tickets, vouchers and your itinerary appear in your account."
+      }
+    ],
+    "faqs": [
+      {
+        "q": "Do you offer credit terms for companies?",
+        "a": "Corporate terms can be agreed with approved companies. Contact our team to discuss."
+      }
+    ],
+    "enquiry": "corporate",
+    "order": 6
+  },
+  {
+    "slug": "events-exhibitions",
+    "title": "Events & Exhibitions",
+    "icon": "events",
+    "group": "specialist",
+    "short": "Delegations, exhibitions and group logistics handled.",
+    "heroTitle": "Your delegation, perfectly moved.",
+    "intro": "Exhibiting or attending an event in Dubai? We coordinate flights, hotel blocks, daily transfers, event documents and hospitality for your delegation, so your team can focus on the show.",
+    "image": "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&w=1600&q=80",
+    "highlights": [
+      {
+        "title": "Hotel blocks",
+        "text": "Rooms near the venue, secured early."
+      },
+      {
+        "title": "Daily shuttles",
+        "text": "Venue transfers scheduled around show hours."
+      },
+      {
+        "title": "Event documents",
+        "text": "Badges, passes and schedules in My OneVaya."
+      },
+      {
+        "title": "Hospitality",
+        "text": "Dinners, desert evenings and client entertainment."
+      }
+    ],
+    "includes": [
+      "Exhibition and conference travel",
+      "Delegation management",
+      "Event documents in My OneVaya",
+      "Hospitality programmes"
+    ],
+    "process": [
+      {
+        "title": "Tell us what you need",
+        "text": "Send an enquiry or build your plan. It reaches a travel designer straight away."
+      },
+      {
+        "title": "Receive a tailored quote",
+        "text": "We prepare an itemised, branded quote with clear pricing."
+      },
+      {
+        "title": "Confirm & relax",
+        "text": "Accept the quote and we book directly with airlines, hotels and partners."
+      },
+      {
+        "title": "Everything in My OneVaya",
+        "text": "Tickets, vouchers and your itinerary appear in your account."
+      }
+    ],
+    "faqs": [
+      {
+        "q": "How early should we contact you?",
+        "a": "For major exhibitions, three to six months ahead is ideal for the best hotel choice."
+      }
+    ],
+    "enquiry": "corporate",
+    "order": 7
+  },
+  {
+    "slug": "group-travel",
+    "title": "Group Travel",
+    "icon": "group",
+    "group": "specialist",
+    "short": "Families, friends, schools and clubs travelling together.",
+    "heroTitle": "Travelling together, beautifully.",
+    "intro": "Weddings, family reunions, school trips and incentive groups. We plan one programme that works for everyone, with a single point of contact and clear documents for every traveller.",
+    "image": "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1600&q=80",
+    "highlights": [
+      {
+        "title": "One programme",
+        "text": "A shared itinerary with optional extras."
+      },
+      {
+        "title": "Group rates",
+        "text": "Hotel and activity rates for groups."
+      },
+      {
+        "title": "Private transport",
+        "text": "Coaches and vans for the whole group."
+      },
+      {
+        "title": "Per-traveller documents",
+        "text": "Every traveller sees their own documents."
+      }
+    ],
+    "includes": [
+      "Families and friends",
+      "Weddings and celebrations",
+      "Schools and clubs",
+      "Incentive groups"
+    ],
+    "process": [
+      {
+        "title": "Tell us what you need",
+        "text": "Send an enquiry or build your plan. It reaches a travel designer straight away."
+      },
+      {
+        "title": "Receive a tailored quote",
+        "text": "We prepare an itemised, branded quote with clear pricing."
+      },
+      {
+        "title": "Confirm & relax",
+        "text": "Accept the quote and we book directly with airlines, hotels and partners."
+      },
+      {
+        "title": "Everything in My OneVaya",
+        "text": "Tickets, vouchers and your itinerary appear in your account."
+      }
+    ],
+    "faqs": [
+      {
+        "q": "What counts as a group?",
+        "a": "Usually ten or more travellers, but we are happy to help smaller parties too."
+      }
+    ],
+    "enquiry": "group",
+    "order": 8
+  },
+  {
+    "slug": "customized-holidays",
+    "title": "Customized Holidays",
+    "icon": "holidays",
+    "group": "travel",
+    "short": "Complete journeys designed end to end, in Dubai and worldwide.",
+    "heroTitle": "A holiday designed only for you.",
+    "intro": "Start with one of our holiday packages or with a blank page. Your travel designer shapes flights, stays, experiences and transfers around your dates, pace and budget.",
+    "image": "https://images.unsplash.com/photo-1514282401047-d79a71a590e8?auto=format&fit=crop&w=1600&q=80",
+    "highlights": [
+      {
+        "title": "Your pace",
+        "text": "Relaxed or full days, it is your choice."
+      },
+      {
+        "title": "Your interests",
+        "text": "Culture, food, beaches, adventure or all of them."
+      },
+      {
+        "title": "Every detail",
+        "text": "Flights, stays, transfers and experiences in one plan."
+      },
+      {
+        "title": "AI-assisted planning",
+        "text": "Describe your trip and see a first draft instantly."
+      }
+    ],
+    "includes": [
+      "Dubai and worldwide holidays",
+      "Honeymoons and celebrations",
+      "Family holidays",
+      "Multi-country journeys"
+    ],
+    "process": [
+      {
+        "title": "Tell us what you need",
+        "text": "Send an enquiry or build your plan. It reaches a travel designer straight away."
+      },
+      {
+        "title": "Receive a tailored quote",
+        "text": "We prepare an itemised, branded quote with clear pricing."
+      },
+      {
+        "title": "Confirm & relax",
+        "text": "Accept the quote and we book directly with airlines, hotels and partners."
+      },
+      {
+        "title": "Everything in My OneVaya",
+        "text": "Tickets, vouchers and your itinerary appear in your account."
+      }
+    ],
+    "faqs": [
+      {
+        "q": "Can I change a holiday package?",
+        "a": "Yes. Every package is a starting point. Ask for changes and we update your quote."
+      }
+    ],
+    "enquiry": "general",
+    "order": 9
+  }
+]
