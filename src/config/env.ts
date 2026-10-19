@@ -15,6 +15,7 @@ const schema = z.object({
   PORT: z.coerce.number().default(5000),
   CORS_ORIGINS: z.string().default("http://localhost:3000"),
   CLIENT_URL: z.string().default("http://localhost:3000"),
+  ADMIN_URL: z.string().default("http://localhost:3001"),
   API_URL: z.string().default("http://localhost:5000"),
 
   MONGODB_URI: z.string().default("mongodb://127.0.0.1:27017/onevaya"),
@@ -30,7 +31,7 @@ const schema = z.object({
 
   ANTHROPIC_API_KEY: z.string().optional().default(""),
   AI_CHAT_MODEL: z.string().default("claude-haiku-5-5"),
-  AI_PLANNER_MODEL: z.string().default("claude-opus-5-5"),
+  AI_PLANNER_MODEL: z.string().default("claude-sonnet-5-5"),
   AI_CHAT_MAX_TURNS: z.coerce.number().default(20),
 
   SMTP_HOST: z.string().optional().default(""),

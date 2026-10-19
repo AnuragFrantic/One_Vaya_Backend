@@ -18,5 +18,5 @@ export function getClaude() {
 
 export const models = {
   chat: env.AI_CHAT_MODEL, // claude-haiku-5-5 (fast, low cost)
-  planner: env.AI_PLANNER_MODEL, // claude-opus-5-5 (best quality)
+  planner: env.AI_PLANNER_MODEL, // claude-sonnet-5-5 (cost-efficient; claude-opus-5-5 for top quality)
 };
