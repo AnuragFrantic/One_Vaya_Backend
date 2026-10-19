@@ -42,16 +42,11 @@ const schema = z.object({
   EMAIL_FROM: z.string().default("OneVaya Travel & Tourism <hello@onevaya.com>"),
   TEAM_EMAIL: z.string().default("team@onevaya.com"),
 
-  STORAGE_DRIVER: z.enum(["local", "s3"]).default("local"),
   UPLOAD_DIR: z.string().default("uploads"),
-  S3_BUCKET: z.string().optional().default(""),
-  S3_REGION: z.string().optional().default(""),
-  S3_ACCESS_KEY_ID: z.string().optional().default(""),
-  S3_SECRET_ACCESS_KEY: z.string().optional().default(""),
-  S3_ENDPOINT: z.string().optional().default(""),
   FILE_URL_SECRET: z.string().min(8).default("change-me-too"),
   DOWNLOAD_LINK_TTL_MINUTES: z.coerce.number().default(10),
   MAX_UPLOAD_MB: z.coerce.number().default(15),
+  MAX_IMAGE_MB: z.coerce.number().default(5),
 
   ADMIN_NAME: z.string().default("OneVaya Admin"),
   ADMIN_EMAIL: z.string().default("admin@onevaya.com"),
@@ -79,12 +74,6 @@ if (env.NODE_ENV === "production") {
 export const features = {
   ai: env.ANTHROPIC_API_KEY.trim().length > 0,
   email: env.SMTP_HOST.trim().length > 0,
-  s3:
-    env.STORAGE_DRIVER === "s3" &&
-    !!env.S3_BUCKET &&
-    !!env.S3_REGION &&
-    !!env.S3_ACCESS_KEY_ID &&
-    !!env.S3_SECRET_ACCESS_KEY,
 };
 
 export const corsOrigins = env.CORS_ORIGINS.split(",").map((s) => s.trim()).filter(Boolean);

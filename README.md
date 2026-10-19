@@ -10,7 +10,6 @@ the public website, the **My OneVaya** customer portal, the **admin panel** and 
 > |---|---|---|
 > | **Claude API** (AI chatbot + AI planner) | Demo mode: rule-based replies and planner | Real Claude AI, **no code change** |
 > | **Email** (SMTP) | Emails printed in the terminal | Real emails sent |
-> | **File storage** (S3 / R2 / Wasabi) | Files saved in `./uploads` | Private cloud bucket |
 > | **MongoDB** | `npm run dev:memory` = built-in temporary DB | Your MongoDB / Atlas |
 >
 > **To go live with Claude later:** paste the key into `.env` → `ANTHROPIC_API_KEY=sk-ant-...` → restart. That's all.
@@ -66,14 +65,14 @@ All secrets and settings live in `.env` (never commit it; `.env.example` is the 
 | Auth | `JWT_SECRET`, `JWT_EXPIRES_IN`, `COOKIE_NAME`, `COOKIE_SECURE` | Use a long random `JWT_SECRET`; `COOKIE_SECURE=true` on HTTPS |
 | **Claude AI** | `ANTHROPIC_API_KEY`, `AI_CHAT_MODEL`, `AI_PLANNER_MODEL`, `AI_CHAT_MAX_TURNS` | Empty key = demo mode. Models: `claude-haiku-5-5` (chat), `claude-sonnet-5-5` (planner) |
 | Email | `SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE`, `SMTP_USER`, `SMTP_PASS`, `EMAIL_FROM`, `TEAM_EMAIL` | Empty `SMTP_HOST` = console output |
-| Storage | `STORAGE_DRIVER`, `UPLOAD_DIR`, `S3_*`, `FILE_URL_SECRET`, `DOWNLOAD_LINK_TTL_MINUTES`, `MAX_UPLOAD_MB` | `local` now, `s3` later |
+| Storage | `UPLOAD_DIR`, `FILE_URL_SECRET`, `DOWNLOAD_LINK_TTL_MINUTES`, `MAX_UPLOAD_MB`, `MAX_IMAGE_MB` | Multer saves uploads on the server disk (see **File storage** in section 3) |
 | First admin | `ADMIN_NAME`, `ADMIN_EMAIL`, `ADMIN_PASSWORD` | Used by `npm run seed` |
 
 The server validates `.env` at start-up and prints a clear error if something is missing. In
 production it refuses to start with the placeholder secrets.
 
 On start-up it logs the active mode, e.g.:
-`Mode → AI: DEMO (no ANTHROPIC_API_KEY) · Email: console · Storage: local`
+`Mode → AI: DEMO (no ANTHROPIC_API_KEY) · Email: console · Storage: disk (uploads/)`
 
 ---
 
@@ -82,7 +81,7 @@ On start-up it logs the active mode, e.g.:
 ```
 Backend/
 ├── .env / .env.example        All settings & secret keys
-├── uploads/                   Local document storage (when STORAGE_DRIVER=local)
+├── uploads/                   Files saved by multer: documents/ (private) and images/ (public)
 └── src/
     ├── server.ts              Starts DB + HTTP server (entry point)
     ├── app.ts                 Express app: security, CORS, JSON, cookies, routes, errors
@@ -112,7 +111,7 @@ Backend/
     │   ├── error.ts           404 + one JSON error format for everything
     │   ├── rateLimit.ts       Limits for API, auth, forms and AI (protects the AI bill)
     │   ├── spam.ts            Honeypot spam protection for public forms
-    │   └── upload.ts          PDF/image upload (multer, size/type limits)
+    │   └── upload.ts          Multer disk storage: travel documents + website images (type/size limits)
     ├── services/              Business logic & integrations
     │   ├── ai/
     │   │   ├── client.ts      ★ The only place the Claude client is created (key + models)
@@ -123,7 +122,7 @@ Backend/
     │   │   └── demo.ts        Demo concierge (used without a key / on API errors)
     │   ├── itinerary/         Smart validation rules (same as the website Trip Builder)
     │   ├── email.service.ts   SMTP or console + branded templates
-    │   ├── storage.service.ts Local disk or S3 + signed download links
+    │   ├── storage.service.ts File keys, signed document links, public image URLs
     │   └── pdf.service.ts     Branded quote PDF
     ├── validators/index.ts    All Zod request schemas
     ├── utils/                 ApiError, helpers (references, paging, CSV), logger, responses
@@ -132,6 +131,19 @@ Backend/
 ```
 
 ---
+
+### File storage (multer)
+
+Uploads are saved on the server's disk by **multer**. There is no cloud storage to set up.
+
+| What | Saved in | Who can open it |
+|---|---|---|
+| Travel documents (tickets, vouchers, PDFs) | `uploads/documents/<year>/<random>.pdf` | Never public. The customer gets a link that expires after `DOWNLOAD_LINK_TTL_MINUTES`, and only after the server checks the booking is theirs (`GET /api/files/:token`) |
+| Website images (services, experiences, packages, blog) | `uploads/images/<year>/<random>.jpg` | Public at `API_URL/uploads/images/…`, so the website can show them |
+
+- **Limits:** documents are PDF/JPG/PNG/WEBP up to `MAX_UPLOAD_MB`; images are JPG/PNG/WEBP up to `MAX_IMAGE_MB`.
+- **On the live server:** keep `uploads/` on a disk that survives redeploys, and back it up with the database. If the backend ever runs on several servers, or moves to a host without a persistent disk, move files to cloud storage (for example S3) at that point.
+- `uploads/` is in `.gitignore`, so customer files are never committed.
 
 ## 4. How a request flows
 
@@ -272,6 +284,7 @@ All routes are under `/api`. 🔓 public · 👤 customer · 🛠 staff/admin ·
 | Leads | `GET /admin/leads?status=&source=&q=` · `GET/PATCH /admin/leads/:id` · `POST /admin/leads/:id/notes` · `POST /admin/leads/:id/quote` |
 | Quotes | `GET/POST /admin/quotes` · `GET/PATCH /admin/quotes/:id` · `POST …/validate` · `POST …/override` · `GET …/pdf` · `POST …/send` · `POST …/convert` |
 | Bookings | `GET /admin/bookings` · `GET/PATCH /admin/bookings/:id` |
+| Images | `POST /admin/uploads/image` (multipart `file`: JPG/PNG/WEBP) → `{ url }`, public at `/uploads/images/…` |
 | Documents | `POST /admin/bookings/:id/documents` (multipart `file`, `name`, `type`, `visibleToCustomer`) · `POST …/documents/pending` · `PATCH/DELETE /admin/documents/:docId` · `GET …/link` · `GET /admin/documents/pending` |
 | Finance | `GET/POST /admin/invoices` · `PATCH /admin/invoices/:id` · `GET/POST /admin/payments` · 🔑 deletes |
 | Messages | `GET /admin/threads?status=&kind=` · `GET /admin/threads/:id` · `POST …/reply` · `PATCH …/status` · `GET /admin/chats?handoff=true` · `GET /admin/chats/:id` |
@@ -304,7 +317,8 @@ Lists accept `?page=1&limit=20&q=search&sort=-createdAt` and return `meta: { pag
   internal fields are never returned to customers.
 - Zod validation on every write; Mongoose rejects unknown fields; consistent JSON errors (no stack traces in production).
 - `helmet` security headers, CORS allow-list, rate limits (auth, forms, AI), honeypot on public forms.
-- Documents are private: download links are signed and expire (`DOWNLOAD_LINK_TTL_MINUTES`); S3 uses pre-signed URLs.
+- Documents are private: they are never served directly; download links are signed and expire (`DOWNLOAD_LINK_TTL_MINUTES`).
+- Uploads get random file names and an extension taken from the checked file type (never the user's file name); SVG images are refused.
 - Before production: real `JWT_SECRET` + `FILE_URL_SECRET`, `COOKIE_SECURE=true`, HTTPS, change the
   seeded admin password, MongoDB with authentication and daily backups (proposal).
 
@@ -315,7 +329,7 @@ Lists accept `?page=1&limit=20&q=search&sort=-createdAt` and return `meta: { pag
 1. **MongoDB Atlas** (or server MongoDB) → `MONGODB_URI`, then `npm run seed`.
 2. **Claude API** → `ANTHROPIC_API_KEY` (set a monthly spend limit in the Anthropic console).
 3. **SMTP** (e.g. Google Workspace, Zoho, SendGrid, Amazon SES) → `SMTP_*`, `EMAIL_FROM`, `TEAM_EMAIL`.
-4. **Private storage** (AWS S3 / Cloudflare R2 / Wasabi) → `STORAGE_DRIVER=s3` + `S3_*`.
+4. **File storage** → keep the `uploads/` folder on a persistent disk and include it in server backups (see **File storage** in section 3).
 5. Production values: `NODE_ENV=production`, `COOKIE_SECURE=true`, `CORS_ORIGINS`, `CLIENT_URL`, `ADMIN_URL`, `API_URL`, secrets.
 6. `npm run build && npm start` behind Nginx/PM2 (or any Node host) with HTTPS.
 

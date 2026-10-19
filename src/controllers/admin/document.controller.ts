@@ -2,7 +2,7 @@ import type { Request, Response } from "express";
 import { Booking, TravelDocument, User } from "../../models";
 import { ApiError } from "../../utils/ApiError";
 import { ok, created } from "../../utils/respond";
-import { saveFile, deleteFile, getDownloadUrl } from "../../services/storage.service";
+import { keyOf, deleteFile, discardUpload, getDownloadUrl } from "../../services/storage.service";
 import { emails } from "../../services/email.service";
 import { documentMetaSchema } from "../../validators";
 import { safeName } from "../portal.controller";
@@ -20,12 +20,20 @@ async function bookingOr404(id: string) {
 
 /** POST /api/admin/bookings/:id/documents  (multipart: file + name + type + visibleToCustomer) */
 export async function uploadDocument(req: Request, res: Response) {
-  const booking = await bookingOr404(String(req.params.id));
   if (!req.file) throw ApiError.badRequest("Attach a file in the `file` field");
+  // multer has already saved the file; remove it again if the request is rejected.
+  const booking = await Booking.findById(String(req.params.id));
+  if (!booking) {
+    await discardUpload(req.file);
+    throw ApiError.notFound("Booking not found");
+  }
   const meta = documentMetaSchema.safeParse(req.body);
-  if (!meta.success) throw ApiError.badRequest("Document name and type are required", meta.error.issues);
+  if (!meta.success) {
+    await discardUpload(req.file);
+    throw ApiError.badRequest("Document name and type are required", meta.error.issues);
+  }
 
-  const fileKey = await saveFile(req.file.buffer, req.file.originalname, req.file.mimetype);
+  const fileKey = keyOf(req.file);
   // If a "pending" placeholder with the same name exists, fill it instead of adding a duplicate.
   const placeholder = await TravelDocument.findOne({ booking: booking._id, name: meta.data.name, status: "pending" });
   const doc = placeholder ?? new TravelDocument({ booking: booking._id, customer: booking.customer });

@@ -10,7 +10,7 @@ export function notFound(req: Request, _res: Response, next: NextFunction) {
 }
 
 /** Single place that turns any thrown error into a consistent JSON response. */
-export function errorHandler(err: unknown, _req: Request, res: Response, _next: NextFunction) {
+export function errorHandler(err: unknown, req: Request, res: Response, _next: NextFunction) {
   let status = 500;
   let message = "Something went wrong. Please try again.";
   let details: unknown;
@@ -32,7 +32,8 @@ export function errorHandler(err: unknown, _req: Request, res: Response, _next: 
     details = (err as { keyValue?: unknown }).keyValue;
   } else if (err instanceof MulterError) {
     status = 400;
-    message = err.code === "LIMIT_FILE_SIZE" ? `File is larger than ${env.MAX_UPLOAD_MB} MB` : err.message;
+    const limit = req.originalUrl.includes("/uploads/image") ? env.MAX_IMAGE_MB : env.MAX_UPLOAD_MB;
+    message = err.code === "LIMIT_FILE_SIZE" ? `File is larger than ${limit} MB` : err.message;
   }
 
   if (status >= 500) logger.error(err);
