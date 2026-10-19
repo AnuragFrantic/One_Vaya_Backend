@@ -16,7 +16,7 @@ async function main() {
     logger.info(`OneVaya API running on http://localhost:${env.PORT}/api`);
     logger.info(
       `Mode → AI: ${features.ai ? `LIVE (${env.AI_CHAT_MODEL} / ${env.AI_PLANNER_MODEL})` : "DEMO (no ANTHROPIC_API_KEY)"} · ` +
-        `Email: ${features.email ? "SMTP" : "console"} · Storage: ${features.s3 ? "S3" : "local"}`,
+        `Email: ${features.email ? "SMTP" : "console"} · Storage: disk (${env.UPLOAD_DIR}/)`,
     );
   });
 

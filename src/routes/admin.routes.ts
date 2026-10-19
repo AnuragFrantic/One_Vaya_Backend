@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { requireStaff, requireAdmin } from "../middleware/auth";
 import { validate } from "../middleware/validate";
-import { uploadDocument } from "../middleware/upload";
+import { uploadDocument, uploadImage } from "../middleware/upload";
 import * as v from "../validators";
 import { dashboard } from "../controllers/admin/dashboard.controller";
 import * as leads from "../controllers/admin/lead.controller";
@@ -13,6 +13,7 @@ import * as threads from "../controllers/admin/thread.controller";
 import * as reports from "../controllers/admin/report.controller";
 import * as users from "../controllers/admin/user.controller";
 import * as catalog from "../controllers/admin/catalog.controller";
+import * as uploads from "../controllers/admin/upload.controller";
 
 /** Admin panel API. Staff and admins only; some actions are admin-only. */
 const r = Router();
@@ -37,6 +38,9 @@ r.post("/quotes/:id/override", validate(v.overrideSchema), quotes.overrideRules)
 r.get("/quotes/:id/pdf", quotes.quotePdf);
 r.post("/quotes/:id/send", quotes.sendQuote);
 r.post("/quotes/:id/convert", bookings.convertQuote);
+
+// ── Website images (multer → uploads/images) ──
+r.post("/uploads/image", uploadImage, uploads.uploadImage);
 
 // ── Bookings & documents ──
 r.get("/bookings", bookings.listBookings);

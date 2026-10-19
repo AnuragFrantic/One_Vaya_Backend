@@ -5,7 +5,7 @@ import { ApiError } from "../utils/ApiError";
 
 /**
  * GET /api/files/:token — serves a locally stored document using a signed,
- * short-lived token (only used when STORAGE_DRIVER=local; S3 uses pre-signed URLs).
+ * short-lived token. Files live in UPLOAD_DIR/documents and are never served publicly.
  */
 export async function serveLocalFile(req: Request, res: Response) {
   let file: { fullPath: string; filename: string };

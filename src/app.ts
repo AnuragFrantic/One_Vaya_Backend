@@ -1,4 +1,5 @@
 import express from "express";
+import { IMAGES_ROOT } from "./services/storage.service";
 import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
@@ -15,6 +16,14 @@ export function createApp() {
 
   app.set("trust proxy", 1); // correct client IPs behind a load balancer / Nginx
   app.disable("x-powered-by");
+
+  // Public website images uploaded from the admin panel. Served before the global helmet() so the
+  // website (another origin) may display them. Travel documents are never served from here.
+  app.use(
+    "/uploads/images",
+    helmet({ crossOriginResourcePolicy: { policy: "cross-origin" } }),
+    express.static(IMAGES_ROOT, { index: false, dotfiles: "deny", fallthrough: false, maxAge: "30d", immutable: true }),
+  );
 
   app.use(helmet());
   app.use(cors({ origin: corsOrigins, credentials: true }));

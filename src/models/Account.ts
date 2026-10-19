@@ -11,7 +11,7 @@ const documentSchema = new Schema(
     name: { type: String, required: true },
     type: { type: String, enum: DOCUMENT_TYPES, default: "other" },
     status: { type: String, enum: ["pending", "ready"], default: "ready" },
-    fileKey: String, // path in local storage or S3 key — never exposed directly
+    fileKey: String, // path inside UPLOAD_DIR (e.g. documents/2026/<uuid>.pdf) — never exposed directly
     mimeType: String,
     size: Number,
     visibleToCustomer: { type: Boolean, default: true },
