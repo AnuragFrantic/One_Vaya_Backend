@@ -61,10 +61,10 @@ All secrets and settings live in `.env` (never commit it; `.env.example` is the 
 
 | Group | Variables | Notes |
 |---|---|---|
-| App | `NODE_ENV`, `PORT`, `CORS_ORIGINS`, `CLIENT_URL`, `API_URL` | `CORS_ORIGINS` = website + admin URLs, comma separated |
+| App | `NODE_ENV`, `PORT`, `CORS_ORIGINS`, `CLIENT_URL`, `ADMIN_URL`, `API_URL` | `CORS_ORIGINS` = website + admin URLs, comma separated; `ADMIN_URL` is used for links in team emails |
 | Database | `MONGODB_URI`, `USE_MEMORY_DB` | Atlas: `mongodb+srv://user:pass@cluster/onevaya` |
 | Auth | `JWT_SECRET`, `JWT_EXPIRES_IN`, `COOKIE_NAME`, `COOKIE_SECURE` | Use a long random `JWT_SECRET`; `COOKIE_SECURE=true` on HTTPS |
-| **Claude AI** | `ANTHROPIC_API_KEY`, `AI_CHAT_MODEL`, `AI_PLANNER_MODEL`, `AI_CHAT_MAX_TURNS` | Empty key = demo mode. Models: `claude-haiku-5-5` (chat), `claude-opus-5-5` (planner) |
+| **Claude AI** | `ANTHROPIC_API_KEY`, `AI_CHAT_MODEL`, `AI_PLANNER_MODEL`, `AI_CHAT_MAX_TURNS` | Empty key = demo mode. Models: `claude-haiku-5-5` (chat), `claude-sonnet-5-5` (planner) |
 | Email | `SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE`, `SMTP_USER`, `SMTP_PASS`, `EMAIL_FROM`, `TEAM_EMAIL` | Empty `SMTP_HOST` = console output |
 | Storage | `STORAGE_DRIVER`, `UPLOAD_DIR`, `S3_*`, `FILE_URL_SECRET`, `DOWNLOAD_LINK_TTL_MINUTES`, `MAX_UPLOAD_MB` | `local` now, `s3` later |
 | First admin | `ADMIN_NAME`, `ADMIN_EMAIL`, `ADMIN_PASSWORD` | Used by `npm run seed` |
@@ -194,7 +194,7 @@ Roles: `customer` (My OneVaya), `staff` (admin panel), `admin` (admin panel + us
 | Feature | Endpoint | Model (from `.env`) | Demo mode (no key) |
 |---|---|---|---|
 | Concierge chatbot (website + portal) | `POST /api/ai/chat` | `AI_CHAT_MODEL` = `claude-haiku-5-5` | Keyword replies, reads the signed-in customer's real bookings/documents |
-| AI itinerary suggestion | `POST /api/ai/plan` | `AI_PLANNER_MODEL` = `claude-opus-5-5` | Rule-based planner (same rules) |
+| AI itinerary suggestion | `POST /api/ai/plan` | `AI_PLANNER_MODEL` = `claude-sonnet-5-5` | Rule-based planner (same rules) |
 | AI status | `GET /api/ai/status` | — | `{ mode: "demo" }` |
 
 **Only OneVaya data, short answers.**
@@ -220,8 +220,8 @@ Roles: `customer` (My OneVaya), `staff` (admin panel), `admin` (admin panel + us
   limit in the Anthropic console**.
 
 **Going live:** set `ANTHROPIC_API_KEY` in `.env` and restart. The start-up log shows
-`AI: LIVE (claude-haiku-5-5 / claude-opus-5-5)`. To change models later, edit `AI_CHAT_MODEL` /
-`AI_PLANNER_MODEL` (e.g. `claude-sonnet-5-5`).
+`AI: LIVE (claude-haiku-5-5 / claude-sonnet-5-5)`. To change models later, edit `AI_CHAT_MODEL` /
+`AI_PLANNER_MODEL` (e.g. `claude-opus-5-5` for the highest-quality planner, about 2x the cost).
 
 ---
 
@@ -316,7 +316,7 @@ Lists accept `?page=1&limit=20&q=search&sort=-createdAt` and return `meta: { pag
 2. **Claude API** → `ANTHROPIC_API_KEY` (set a monthly spend limit in the Anthropic console).
 3. **SMTP** (e.g. Google Workspace, Zoho, SendGrid, Amazon SES) → `SMTP_*`, `EMAIL_FROM`, `TEAM_EMAIL`.
 4. **Private storage** (AWS S3 / Cloudflare R2 / Wasabi) → `STORAGE_DRIVER=s3` + `S3_*`.
-5. Production values: `NODE_ENV=production`, `COOKIE_SECURE=true`, `CORS_ORIGINS`, `CLIENT_URL`, `API_URL`, secrets.
+5. Production values: `NODE_ENV=production`, `COOKIE_SECURE=true`, `CORS_ORIGINS`, `CLIENT_URL`, `ADMIN_URL`, `API_URL`, secrets.
 6. `npm run build && npm start` behind Nginx/PM2 (or any Node host) with HTTPS.
 
 No code changes are needed for any of these steps, only `.env` values.

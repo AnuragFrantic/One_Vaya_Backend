@@ -1,3 +1,4 @@
+import path from "node:path";
 import nodemailer from "nodemailer";
 import { env, features } from "../config/env";
 import { logger } from "../utils/logger";
@@ -17,13 +18,24 @@ const transporter = features.email
 
 type Mail = { to: string; subject: string; html: string; attachments?: { filename: string; content: Buffer }[] };
 
+/**
+ * Client-approved logo (used exactly as supplied), embedded in every email as an inline
+ * attachment so it shows even when images from websites are blocked or the site is not live yet.
+ */
+const LOGO_CID = "onevaya-logo";
+const LOGO_FILE = path.join(__dirname, "../../assets/brand/onevayawhite.png");
+
 export async function sendMail(mail: Mail) {
   if (!transporter) {
     logger.info(`[email:console] To: ${mail.to} | ${mail.subject}\n${mail.html.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim()}`);
     return;
   }
   try {
-    await transporter.sendMail({ from: env.EMAIL_FROM, ...mail });
+    await transporter.sendMail({
+      from: env.EMAIL_FROM,
+      ...mail,
+      attachments: [{ filename: "onevaya-logo.png", path: LOGO_FILE, cid: LOGO_CID }, ...(mail.attachments ?? [])],
+    });
   } catch (err) {
     // Email problems must never break the user's action (e.g. submitting an enquiry).
     logger.error("Email failed:", err);
@@ -37,7 +49,7 @@ const esc = (s: string) => s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&
 const layout = (title: string, body: string) => `
 <div style="background:#F5F0E7;padding:32px;font-family:Arial,sans-serif;color:#101C2C">
   <div style="max-width:560px;margin:auto;background:#fff;border-radius:16px;overflow:hidden">
-    <div style="background:#101C2C;color:#F5F0E7;padding:24px 28px;font-family:Georgia,serif;font-size:24px">OneVaya</div>
+    <div style="background:#101C2C;padding:18px 28px"><img src="cid:${LOGO_CID}" alt="OneVaya" height="64" style="display:block;height:64px;width:auto;border:0"></div>
     <div style="padding:28px">
       <h2 style="font-family:Georgia,serif;font-weight:normal;margin:0 0 12px">${title}</h2>
       ${body}
@@ -61,7 +73,7 @@ export const emails = {
     sendMail({
       to: env.TEAM_EMAIL,
       subject: `New lead ${ref} (${source})`,
-      html: layout("New lead", `<p><b>${esc(name)}</b> (${esc(email)}) via ${esc(source)}.</p>${button(`${env.CLIENT_URL}/admin/leads`, "Open in admin")}`),
+      html: layout("New lead", `<p><b>${esc(name)}</b> (${esc(email)}) via ${esc(source)}.</p>${button(`${env.ADMIN_URL}/leads`, "Open in admin panel")}`),
     }),
 
   quoteSent: (to: string, name: string, ref: string, pdf: Buffer) =>

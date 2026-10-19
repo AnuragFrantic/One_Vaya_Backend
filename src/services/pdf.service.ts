@@ -1,4 +1,8 @@
+import path from "node:path";
 import PDFDocument from "pdfkit";
+
+/** Client-approved logo, used exactly as supplied (works from src/ and dist/). */
+const LOGO_WHITE = path.join(__dirname, "../../assets/brand/onevayawhite.png");
 
 /** Branded quote PDF (navy / ivory / champagne). Returns the file as a Buffer. */
 export function renderQuotePdf(q: {
@@ -25,9 +29,8 @@ export function renderQuotePdf(q: {
 
     // Header band
     doc.rect(0, 0, doc.page.width, 110).fill(NAVY);
-    doc.fillColor("#F5F0E7").font("Times-Roman").fontSize(28).text("OneVaya", 48, 38);
-    doc.fontSize(9).font("Helvetica").fillColor("#C9B58A").text("TRAVEL & TOURISM", 48, 72, { characterSpacing: 3 });
-    doc.fillColor("#F5F0E7").fontSize(10).text(`Quote ${q.ref}`, 0, 44, { align: "right", width: doc.page.width - 48 });
+    doc.image(LOGO_WHITE, 48, 14, { height: 82 });
+    doc.fillColor("#F5F0E7").font("Helvetica").fontSize(10).text(`Quote ${q.ref}`, 0, 44, { align: "right", width: doc.page.width - 48 });
 
     doc.moveDown(5).fillColor(NAVY).font("Times-Roman").fontSize(22).text(q.title, 48, 140);
     doc.font("Helvetica").fontSize(10).fillColor(MUTED)
