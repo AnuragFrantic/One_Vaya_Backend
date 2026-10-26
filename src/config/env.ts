@@ -67,16 +67,22 @@ if (!parsed.success) {
 
 export const env = parsed.data;
 
-// HTTPS certificate files must exist when configured (clear message instead of a crash later).
+// HTTPS certificate files. Production: they must exist (clear message instead of a crash later).
+// Development (localhost): the live server's paths in .env are simply ignored, so the same .env works on both.
 if (!!env.SSL_KEY_PATH !== !!env.SSL_CERT_PATH) {
   console.error("❌ Set both SSL_KEY_PATH and SSL_CERT_PATH for HTTPS, or leave both empty for HTTP.");
   process.exit(1);
 }
-for (const [name, file] of [["SSL_KEY_PATH", env.SSL_KEY_PATH], ["SSL_CERT_PATH", env.SSL_CERT_PATH], ["SSL_CA_PATH", env.SSL_CA_PATH]] as const) {
-  if (file && !fs.existsSync(file)) {
-    console.error(`❌ ${name} points to a file that does not exist: ${file}`);
+const missingSsl = ([["SSL_KEY_PATH", env.SSL_KEY_PATH], ["SSL_CERT_PATH", env.SSL_CERT_PATH], ["SSL_CA_PATH", env.SSL_CA_PATH]] as const).filter(
+  ([, file]) => file && !fs.existsSync(file),
+);
+if (missingSsl.length) {
+  if (env.NODE_ENV === "production") {
+    for (const [name, file] of missingSsl) console.error(`❌ ${name} points to a file that does not exist: ${file}`);
     process.exit(1);
   }
+  console.warn("ℹ️  SSL certificate files not found on this machine: running on plain HTTP (localhost development).");
+  env.SSL_KEY_PATH = env.SSL_CERT_PATH = env.SSL_CA_PATH = "";
 }
 
 if (env.NODE_ENV === "production") {
