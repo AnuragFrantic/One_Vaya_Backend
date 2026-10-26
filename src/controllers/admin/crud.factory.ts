@@ -3,6 +3,7 @@ import type { Model } from "mongoose";
 import { ApiError } from "../../utils/ApiError";
 import { ok, created } from "../../utils/respond";
 import { escapeRegex, paging, slugify } from "../../utils/helpers";
+import { refreshWebsite } from "../../services/website.service";
 
 /**
  * Generic list / get / create / update / delete for simple admin-managed content
@@ -35,18 +36,21 @@ export function crud(model: Model<any>, opts: { searchFields: string[]; slugFrom
       const body = { ...req.body };
       if (opts.slugFrom && !body.slug && body[opts.slugFrom]) body.slug = slugify(String(body[opts.slugFrom]));
       created(res, await model.create(body));
+      refreshWebsite(`${model.modelName} created`);
     },
 
     update: async (req: Request, res: Response) => {
       const doc = await model.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
       if (!doc) throw ApiError.notFound();
       ok(res, doc);
+      refreshWebsite(`${model.modelName} updated`);
     },
 
     remove: async (req: Request, res: Response) => {
       const doc = await model.findByIdAndDelete(req.params.id);
       if (!doc) throw ApiError.notFound();
       ok(res, { deleted: true });
+      refreshWebsite(`${model.modelName} deleted`);
     },
   };
 }
