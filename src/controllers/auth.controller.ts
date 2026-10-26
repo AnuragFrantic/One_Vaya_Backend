@@ -74,3 +74,16 @@ export async function resetPassword(req: Request, res: Response) {
   await user.save();
   ok(res, { message: "Password updated. You can now sign in." });
 }
+
+/** Signed-in user changes their own password; the current one must be confirmed first. */
+export async function changePassword(req: Request, res: Response) {
+  const { currentPassword, newPassword } = req.body;
+  const user = await User.findById(req.user!.id).select("+passwordHash");
+  if (!user || !(await (user as unknown as { checkPassword(p: string): Promise<boolean> }).checkPassword(currentPassword))) {
+    throw ApiError.badRequest("Current password is incorrect");
+  }
+  if (currentPassword === newPassword) throw ApiError.badRequest("Choose a new password that is different from the current one");
+  user.passwordHash = await hashPassword(newPassword);
+  await user.save();
+  ok(res, { message: "Password updated" });
+}

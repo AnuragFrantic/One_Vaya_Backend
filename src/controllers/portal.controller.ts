@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import { Booking, Quote, TravelDocument, Invoice, Payment, Thread, User, hashPassword } from "../models";
+import { Booking, Quote, TravelDocument, Invoice, Payment, Thread, User } from "../models";
 import { emitTo, rooms } from "../socket/realtime";
 import { ApiError } from "../utils/ApiError";
 import { ok, created } from "../utils/respond";
@@ -19,16 +19,6 @@ export async function getProfile(req: Request, res: Response) {
 
 export async function updateProfile(req: Request, res: Response) {
   ok(res, await User.findByIdAndUpdate(me(req), req.body, { new: true, runValidators: true }));
-}
-
-export async function changePassword(req: Request, res: Response) {
-  const user = await User.findById(me(req)).select("+passwordHash");
-  if (!user || !(await (user as unknown as { checkPassword(p: string): Promise<boolean> }).checkPassword(req.body.currentPassword))) {
-    throw ApiError.badRequest("Current password is incorrect");
-  }
-  user.passwordHash = await hashPassword(req.body.newPassword);
-  await user.save();
-  ok(res, { message: "Password updated" });
 }
 
 /** Overview: upcoming & past trips (bookings) plus quotes sent to the customer. */

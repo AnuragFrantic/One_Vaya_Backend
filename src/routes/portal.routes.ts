@@ -1,5 +1,6 @@
 import { Router } from "express";
 import * as c from "../controllers/portal.controller";
+import { changePassword } from "../controllers/auth.controller";
 import { requireRole } from "../middleware/auth";
 import { validate } from "../middleware/validate";
 import { profileSchema, changePasswordSchema, threadCreateSchema, threadReplySchema } from "../validators";
@@ -10,7 +11,7 @@ r.use(requireRole("customer"));
 
 r.get("/profile", c.getProfile);
 r.patch("/profile", validate(profileSchema), c.updateProfile);
-r.post("/profile/password", validate(changePasswordSchema), c.changePassword);
+r.post("/profile/password", validate(changePasswordSchema), changePassword);
 
 r.get("/trips", c.listTrips);
 r.get("/trips/:id", c.getTrip);
