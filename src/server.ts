@@ -7,19 +7,34 @@ import { createApp } from "./app";
 import { logger } from "./utils/logger";
 import { initSocket } from "./socket";
 
+/** Let's Encrypt certificate on the live server (orionaiglobal.com). */
+const LIVE_SSL = {
+  key: "/etc/letsencrypt/live/orionaiglobal.com/privkey.pem",
+  cert: "/etc/letsencrypt/live/orionaiglobal.com/fullchain.pem",
+};
+
 /**
- * HTTPS when SSL_KEY_PATH and SSL_CERT_PATH are set (production, e.g. Let's Encrypt files),
- * plain HTTP otherwise (localhost development, or when Nginx in front handles HTTPS).
+ * HTTPS in production: SSL_KEY_PATH / SSL_CERT_PATH from .env, or else the live server's
+ * Let's Encrypt files above when they exist. Plain HTTP for localhost development
+ * (or when nothing is configured, e.g. behind Nginx).
  */
+function sslFiles() {
+  if (env.SSL_KEY_PATH && env.SSL_CERT_PATH) return { key: env.SSL_KEY_PATH, cert: env.SSL_CERT_PATH };
+  if (env.NODE_ENV === "production" && fs.existsSync(LIVE_SSL.key) && fs.existsSync(LIVE_SSL.cert)) return LIVE_SSL;
+  return null;
+}
+
 function createServer(app: http.RequestListener) {
-  if (env.SSL_KEY_PATH && env.SSL_CERT_PATH) {
+  const ssl = sslFiles();
+  if (ssl) {
     const options: https.ServerOptions = {
-      key: fs.readFileSync(env.SSL_KEY_PATH),
-      cert: fs.readFileSync(env.SSL_CERT_PATH),
+      key: fs.readFileSync(ssl.key),
+      cert: fs.readFileSync(ssl.cert),
       ...(env.SSL_CA_PATH ? { ca: fs.readFileSync(env.SSL_CA_PATH) } : {}),
     };
     return { server: https.createServer(options, app), protocol: "https" as const };
   }
+  if (env.NODE_ENV === "production") logger.warn("Production without an SSL certificate: serving plain HTTP (fine only behind Nginx/HTTPS proxy).");
   return { server: http.createServer(app), protocol: "http" as const };
 }
 
