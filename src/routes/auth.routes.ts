@@ -16,4 +16,5 @@ r.post("/reset-password", authLimiter, validate(resetSchema), c.resetPassword);
 // Any signed-in user (admin, staff or customer) changing their own password.
 r.post("/change-password", requireAuth, authLimiter, validate(changePasswordSchema), c.changePassword);
 
+
 export default r;
