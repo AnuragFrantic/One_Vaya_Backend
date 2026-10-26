@@ -21,6 +21,8 @@ const schema = z.object({
   CORS_ORIGINS: z.string().default("http://localhost:3000"),
   CLIENT_URL: z.string().default("http://localhost:3000"),
   ADMIN_URL: z.string().default("http://localhost:3001"),
+  // Shared with the website (Frontend REVALIDATE_SECRET): lets content saves refresh its pages instantly.
+  REVALIDATE_SECRET: z.string().optional().default(""),
   API_URL: z.string().default("http://localhost:9877"),
 
   MONGODB_URI: z.string().default("mongodb://127.0.0.1:27017/onevaya"),
