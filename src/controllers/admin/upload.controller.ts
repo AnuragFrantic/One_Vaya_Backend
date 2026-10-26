@@ -11,5 +11,7 @@ import { keyOf, publicImageUrl } from "../../services/storage.service";
 export async function uploadImage(req: Request, res: Response) {
   if (!req.file) throw ApiError.badRequest("Attach an image in the `file` field");
   const key = keyOf(req.file);
-  created(res, { url: publicImageUrl(key), key, size: req.file.size, mimeType: req.file.mimetype });
+  // Use the API's real public address, so the link works even if API_URL in .env still says localhost.
+  const origin = `${req.protocol}://${req.get("host")}`;
+  created(res, { url: publicImageUrl(key, origin), key, size: req.file.size, mimeType: req.file.mimetype });
 }

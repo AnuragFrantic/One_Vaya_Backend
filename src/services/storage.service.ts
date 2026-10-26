@@ -41,8 +41,9 @@ export function verifyLocalToken(token: string) {
 }
 
 /** Public URL of an uploaded website image. */
-export function publicImageUrl(key: string) {
-  return `${env.API_URL}/uploads/${key}`;
+/** Public link for an uploaded image. `origin` = the address the request came in on (e.g. https://orionaiglobal.com:9877). */
+export function publicImageUrl(key: string, origin = env.API_URL) {
+  return `${origin.replace(/\/$/, "")}/uploads/${key}`;
 }
 
 function resolveLocal(key: string) {
