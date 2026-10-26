@@ -4,6 +4,7 @@ import { ApiError } from "../../utils/ApiError";
 import { ok } from "../../utils/respond";
 import { paging } from "../../utils/helpers";
 import { emails } from "../../services/email.service";
+import { emitTo, rooms } from "../../socket/realtime";
 
 /* Customer messages & change requests from My OneVaya (and the AI concierge). */
 
@@ -29,6 +30,8 @@ export async function replyThread(req: Request, res: Response) {
   if (!t) throw ApiError.notFound("Conversation not found");
   t.messages.push({ from: "team", author: req.user!.id, name: req.user!.name, text: req.body.text });
   await t.save();
+  // Live: the customer sees the reply instantly in My OneVaya; other staff see it in Messages.
+  emitTo([rooms.staff, rooms.user(String(t.customer))], "thread:message", { threadId: String(t._id), status: t.status, message: t.messages[t.messages.length - 1] });
   const customer = await User.findById(t.customer).select("name email").lean();
   if (customer) await emails.teamReply(customer.email, customer.name, t.subject);
   ok(res, t);
@@ -38,6 +41,7 @@ export async function setThreadStatus(req: Request, res: Response) {
   const status = req.body.status === "resolved" ? "resolved" : "open";
   const t = await Thread.findByIdAndUpdate(req.params.id, { status }, { new: true });
   if (!t) throw ApiError.notFound("Conversation not found");
+  emitTo([rooms.staff, rooms.user(String(t.customer))], "thread:status", { threadId: String(t._id), status: t.status });
   ok(res, t);
 }
 

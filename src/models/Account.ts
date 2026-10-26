@@ -91,8 +91,12 @@ const conversationSchema = new Schema(
     customer: { type: Types.ObjectId, ref: "User", index: true },
     visitorId: { type: String, index: true },
     page: String,
-    messages: [{ _id: false, role: { type: String, enum: ["user", "assistant"] }, text: String, at: { type: Date, default: Date.now } }],
+    // role "staff" = a team member replying live (Socket.io takeover); `name` is shown to the guest.
+    messages: [{ _id: false, role: { type: String, enum: ["user", "assistant", "staff"] }, text: String, name: String, at: { type: Date, default: Date.now } }],
     handoffRequested: { type: Boolean, default: false, index: true },
+    // While a staff member has taken over, the AI does not answer.
+    staffActive: { type: Boolean, default: false },
+    staffMember: { type: Types.ObjectId, ref: "User" },
     mode: { type: String, enum: ["ai", "demo"], default: "demo" },
   },
   { timestamps: true },

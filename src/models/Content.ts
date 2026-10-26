@@ -9,7 +9,7 @@ const blogSchema = new Schema(
     excerpt: String,
     category: String,
     image: String,
-    date: Date,
+    date: { type: Date, default: Date.now }, // publish date (defaults to today)
     readMin: Number,
     author: String,
     // Blocks: { type: "p" | "h2" | "ul" | "quote", text?, items? }

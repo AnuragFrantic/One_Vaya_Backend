@@ -1,5 +1,6 @@
 import type { Request, Response } from "express";
 import { Booking, Quote, TravelDocument, Invoice, Payment, Thread, User, hashPassword } from "../models";
+import { emitTo, rooms } from "../socket/realtime";
 import { ApiError } from "../utils/ApiError";
 import { ok, created } from "../utils/respond";
 import { getDownloadUrl } from "../services/storage.service";
@@ -92,6 +93,8 @@ export async function createThread(req: Request, res: Response) {
     kind,
     messages: [{ from: "customer", author: me(req), name: req.user!.name, text }],
   });
+  // Live: the team sees the new conversation; the customer's other tabs update too.
+  emitTo([rooms.staff, rooms.user(me(req))], "thread:new", { threadId: String(thread._id), subject: thread.subject, kind: thread.kind, customer: req.user!.name });
   created(res, thread);
 }
 
@@ -101,6 +104,7 @@ export async function replyThread(req: Request, res: Response) {
   thread.messages.push({ from: "customer", author: me(req), name: req.user!.name, text: req.body.text });
   thread.status = "open";
   await thread.save();
+  emitTo([rooms.staff, rooms.user(me(req))], "thread:message", { threadId: String(thread._id), status: thread.status, message: thread.messages[thread.messages.length - 1] });
   ok(res, thread);
 }
 

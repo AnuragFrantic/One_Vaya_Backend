@@ -1,45 +1,19 @@
 import type { Request, Response } from "express";
-import { ChatConversation } from "../models";
 import { ok } from "../utils/respond";
-import { ApiError } from "../utils/ApiError";
 import { env } from "../config/env";
 import { aiEnabled } from "../services/ai/client";
-import { chatReply, type ChatTurn } from "../services/ai/chat.service";
 import { suggestItinerary } from "../services/ai/planner.service";
+import { broadcastTurn, handleConciergeMessage } from "../services/chat/concierge.service";
 
 /**
- * POST /api/ai/chat — the OneVaya Concierge (website + portal).
- * Conversations are stored so staff can review them and pick up hand-overs.
+ * POST /api/ai/chat — the OneVaya Concierge over plain HTTP (the same flow is available live over
+ * Socket.io as `chat:message`, see src/socket/index.ts). Conversations are stored for staff review.
  */
 export async function chat(req: Request, res: Response) {
   const { conversationId, visitorId, message, page } = req.body;
-  const customerId = req.user?.role === "customer" ? req.user.id : undefined;
-
-  let convo = conversationId ? await ChatConversation.findById(conversationId) : null;
-  // A conversation can only be continued by the same signed-in customer or the same visitor.
-  if (convo && (convo.customer ? String(convo.customer) !== customerId : convo.visitorId !== visitorId)) convo = null;
-  convo ??= new ChatConversation({ customer: customerId, visitorId, page, mode: aiEnabled() ? "ai" : "demo" });
-
-  const userTurns = convo.messages.filter((m) => m.role === "user").length;
-  if (userTurns >= env.AI_CHAT_MAX_TURNS) {
-    throw new ApiError(429, "This conversation is quite long — please start a new one or contact a travel designer.");
-  }
-
-  const history: ChatTurn[] = convo.messages.map((m) => ({ role: m.role as "user" | "assistant", text: m.text ?? "" }));
-  const { reply, mode } = await chatReply(history, message, {
-    customerId,
-    customerName: req.user?.name,
-    conversationId: String(convo._id),
-    onHandoff: () => {
-      convo!.handoffRequested = true;
-    },
-  });
-
-  convo.messages.push({ role: "user", text: message }, { role: "assistant", text: reply });
-  convo.mode = mode;
-  await convo.save();
-
-  ok(res, { conversationId: String(convo._id), reply, mode, handoffRequested: convo.handoffRequested });
+  const result = await handleConciergeMessage({ conversationId, visitorId, message, page, user: req.user });
+  broadcastTurn(result); // staff watching this chat in the admin panel see it live
+  ok(res, { conversationId: result.conversationId, reply: result.reply, mode: result.mode, handoffRequested: result.handoffRequested, staffActive: result.staffActive });
 }
 
 /** POST /api/ai/plan — AI itinerary suggestion (always returns a validated plan). */

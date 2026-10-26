@@ -1,3 +1,4 @@
+import fs from "fs";
 import "dotenv/config";
 import { z } from "zod";
 
@@ -12,11 +13,15 @@ const bool = z
 
 const schema = z.object({
   NODE_ENV: z.enum(["development", "production", "test"]).default("development"),
-  PORT: z.coerce.number().default(5000),
+  PORT: z.coerce.number().default(9877),
+  // HTTPS: set both to serve HTTPS directly (e.g. Let's Encrypt). Leave empty for HTTP (localhost / behind Nginx).
+  SSL_KEY_PATH: z.string().optional().default(""),
+  SSL_CERT_PATH: z.string().optional().default(""),
+  SSL_CA_PATH: z.string().optional().default(""),
   CORS_ORIGINS: z.string().default("http://localhost:3000"),
   CLIENT_URL: z.string().default("http://localhost:3000"),
   ADMIN_URL: z.string().default("http://localhost:3001"),
-  API_URL: z.string().default("http://localhost:5000"),
+  API_URL: z.string().default("http://localhost:9877"),
 
   MONGODB_URI: z.string().default("mongodb://127.0.0.1:27017/onevaya"),
   USE_MEMORY_DB: bool,
@@ -61,6 +66,18 @@ if (!parsed.success) {
 }
 
 export const env = parsed.data;
+
+// HTTPS certificate files must exist when configured (clear message instead of a crash later).
+if (!!env.SSL_KEY_PATH !== !!env.SSL_CERT_PATH) {
+  console.error("❌ Set both SSL_KEY_PATH and SSL_CERT_PATH for HTTPS, or leave both empty for HTTP.");
+  process.exit(1);
+}
+for (const [name, file] of [["SSL_KEY_PATH", env.SSL_KEY_PATH], ["SSL_CERT_PATH", env.SSL_CERT_PATH], ["SSL_CA_PATH", env.SSL_CA_PATH]] as const) {
+  if (file && !fs.existsSync(file)) {
+    console.error(`❌ ${name} points to a file that does not exist: ${file}`);
+    process.exit(1);
+  }
+}
 
 if (env.NODE_ENV === "production") {
   const weak = ["change-me-to-a-long-random-string", "change-me-too"];
