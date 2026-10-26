@@ -25,7 +25,7 @@ cp .env.example .env        # (already created for you; edit values as needed)
 npm run dev:memory          # no MongoDB needed: starts a temporary DB with demo data
 ```
 
-The API runs on **http://localhost:5000/api** (check `GET /api/health`).
+The API runs on **http://localhost:9877/api** (check `GET /api/health`).
 
 With a real MongoDB (local install or MongoDB Atlas):
 
@@ -112,7 +112,11 @@ Backend/
     │   ├── rateLimit.ts       Limits for API, auth, forms and AI (protects the AI bill)
     │   ├── spam.ts            Honeypot spam protection for public forms
     │   └── upload.ts          Multer disk storage: travel documents + website images (type/size limits)
+    ├── socket/                Socket.io live chat
+    │   ├── index.ts           Connection auth (session cookie), rooms, chat events, rate limit
+    │   └── realtime.ts        emitTo()/rooms used by controllers to push live updates
     ├── services/              Business logic & integrations
+    │   ├── chat/concierge.service.ts  Concierge conversation flow shared by REST and Socket.io
     │   ├── ai/
     │   │   ├── client.ts      ★ The only place the Claude client is created (key + models)
     │   │   ├── prompts.ts     System prompts (OneVaya-only, short answers)
@@ -298,7 +302,7 @@ Lists accept `?page=1&limit=20&q=search&sort=-createdAt` and return `meta: { pag
 
 ## 8. Connecting the frontend & admin panel
 
-- **Website (`Frontend/`):** set `NEXT_PUBLIC_API_URL=http://localhost:5000/api`, then replace the static
+- **Website (`Frontend/`):** set `NEXT_PUBLIC_API_URL=http://localhost:9877/api`, then replace the static
   functions in `Frontend/lib/api.ts` (`getServices`, `getExperiences`, …) and `Frontend/lib/forms.ts`
   (`submitEnquiry` → `POST /enquiries`, `submitTripRequest` → `POST /trip-requests`,
   `sendPortalMessage` → `POST /portal/threads…`) with fetch calls. Send requests with
@@ -307,6 +311,37 @@ Lists accept `?page=1&limit=20&q=search&sort=-createdAt` and return `meta: { pag
 - **Admin panel (`adminPanel/`):** uses the `/api/admin/*` routes, signed in as staff/admin
   (cookie or Bearer token). Add its URL to `CORS_ORIGINS`.
 - The data shapes follow the website's `Frontend/lib/types.ts`.
+
+### Live chat (Socket.io)
+
+The server also runs **Socket.io** on the same port as the API (`http://localhost:9877`, path `/socket.io`). The REST
+routes keep working; sockets add real-time delivery.
+
+```js
+import { io } from "socket.io-client";
+const socket = io("http://localhost:9877", { withCredentials: true }); // sends the session cookie
+
+socket.on("chat:message", (m) => render(m));               // { conversationId, role: user|assistant|staff, text, name?, at }
+socket.on("chat:typing", (t) => showTyping(t));            // { who: concierge|staff|guest, typing }
+socket.emit("chat:message", { visitorId, conversationId, message: "Hi!" }, (res) => {
+  if (!res.ok) showError(res.error); else conversationId = res.data.conversationId;
+});
+```
+
+| Who | Sends | Receives |
+|---|---|---|
+| Website visitor / customer | `chat:join` (restore a conversation after refresh), `chat:message`, `chat:typing` | `chat:message`, `chat:typing`, `chat:staff-joined`, `chat:staff-left` |
+| Signed-in customer | (same) | `thread:message`, `thread:status`: live replies from their travel designer in My OneVaya |
+| Staff / admin | `chat:watch`, `chat:staff-message` (takes over: the AI pauses), `chat:release` (AI answers again), `chat:typing` | `chat:activity`, `chat:handoff`, `chat:message`, `thread:new`, `thread:message`, `thread:status` |
+
+- **Sign-in:** the same `ov_session` cookie as the API (or `auth: { token }`). Visitors can chat without signing in;
+  a conversation can only be joined by the same customer or the same `visitorId`.
+- **Staff takeover:** when a staff member replies, the guest sees "a team member joined" and the AI stops answering
+  until `chat:release`. Hand-over requests (`chat:handoff`) appear instantly for staff.
+- **Limits:** 12 chat messages per minute per connection (the AI costs money per message), messages up to 1,500
+  characters, and the same per-conversation turn limit as REST (`AI_CHAT_MAX_TURNS`).
+- **Going live:** behind Nginx, forward WebSocket upgrades for `/socket.io/` (`proxy_set_header Upgrade $http_upgrade;`
+  `proxy_set_header Connection "upgrade";`). If you run more than one backend server, add the Socket.io Redis adapter.
 
 ---
 
@@ -331,6 +366,20 @@ Lists accept `?page=1&limit=20&q=search&sort=-createdAt` and return `meta: { pag
 3. **SMTP** (e.g. Google Workspace, Zoho, SendGrid, Amazon SES) → `SMTP_*`, `EMAIL_FROM`, `TEAM_EMAIL`.
 4. **File storage** → keep the `uploads/` folder on a persistent disk and include it in server backups (see **File storage** in section 3).
 5. Production values: `NODE_ENV=production`, `COOKIE_SECURE=true`, `CORS_ORIGINS`, `CLIENT_URL`, `ADMIN_URL`, `API_URL`, secrets.
-6. `npm run build && npm start` behind Nginx/PM2 (or any Node host) with HTTPS.
+6. `npm run build && npm start` with PM2 (or any Node host), served over **HTTPS** in one of two ways:
+   - **Directly from Node (Let's Encrypt):** set the certificate paths in `.env`:
+     ```
+     SSL_KEY_PATH=/etc/letsencrypt/live/api.onevaya.com/privkey.pem
+     SSL_CERT_PATH=/etc/letsencrypt/live/api.onevaya.com/fullchain.pem
+     API_URL=https://api.onevaya.com
+     COOKIE_SECURE=true
+     ```
+     The server then starts with `https.createServer` (the log shows `(HTTPS)`), and Socket.io live chat uses the same secure server.
+     - The Node process needs read access to the certificate files.
+     - Using port 443 needs extra rights on Linux.
+     - After certbot renews the certificate, restart the API, for example with a certbot deploy hook running `pm2 restart onevaya-api`.
+   - **Behind Nginx:** leave `SSL_*` empty. Nginx terminates HTTPS and forwards to `http://localhost:PORT`, including WebSocket upgrades for `/socket.io/`.
+
+   With `SSL_*` empty the API runs on plain HTTP, which is what localhost development uses. If only one path is set, or a file is missing, the server stops at start-up with a clear message.
 
 No code changes are needed for any of these steps, only `.env` values.

@@ -35,17 +35,24 @@ export function clearSessionCookie(res: Response) {
 export async function attachUser(req: Request, _res: Response, next: NextFunction) {
   const header = req.headers.authorization;
   const token = req.cookies?.[env.COOKIE_NAME] || (header?.startsWith("Bearer ") ? header.slice(7) : undefined);
-  if (!token) return next();
+  const user = await userFromToken(token);
+  if (user) req.user = user;
+  next();
+}
+
+export type SessionUser = { id: string; role: Role; name: string; email: string };
+
+/** Resolves a session token to an active user, or undefined (invalid/expired token = signed out). Shared with Socket.io. */
+export async function userFromToken(token?: string): Promise<SessionUser | undefined> {
+  if (!token) return undefined;
   try {
     const payload = jwt.verify(token, env.JWT_SECRET) as TokenPayload;
     const user = await User.findById(payload.sub).select("name email role isActive").lean();
-    if (user && user.isActive) {
-      req.user = { id: String(user._id), role: user.role as Role, name: user.name, email: user.email };
-    }
+    if (user && user.isActive) return { id: String(user._id), role: user.role as Role, name: user.name, email: user.email };
   } catch {
     // invalid/expired token → treated as signed out
   }
-  next();
+  return undefined;
 }
 
 export function requireAuth(req: Request, _res: Response, next: NextFunction) {
