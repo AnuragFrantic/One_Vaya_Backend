@@ -14,6 +14,7 @@ import * as reports from "../controllers/admin/report.controller";
 import * as users from "../controllers/admin/user.controller";
 import * as catalog from "../controllers/admin/catalog.controller";
 import * as uploads from "../controllers/admin/upload.controller";
+import * as lookups from "../controllers/admin/lookup.controller";
 
 /** Admin panel API. Staff and admins only; some actions are admin-only. */
 const r = Router();
@@ -95,5 +96,8 @@ mount("blog", catalog.blog);
 mount("faqs", catalog.faqs);
 mount("legal", catalog.legal);
 mount("chatbot-knowledge", catalog.knowledge);
+
+// Lists: experience categories, areas (travel time) and package regions
+mount("lookups", lookups);
 
 export default r;

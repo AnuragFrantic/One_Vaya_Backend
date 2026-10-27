@@ -17,20 +17,7 @@ export const PAYMENT_METHODS = ["bank_transfer", "card_at_office", "cash", "cheq
 export const THREAD_KINDS = ["message", "change_request"] as const;
 export const THREAD_STATUSES = ["open", "resolved"] as const;
 
-export const AREAS = ["Downtown", "Marina", "Desert", "Jumeirah", "Old Dubai", "Abu Dhabi"] as const;
-export type Area = (typeof AREAS)[number];
-
-export const EXPERIENCE_CATEGORIES = ["Attractions", "Desert", "Water", "Culture", "Leisure"] as const;
-
-/**
- * Minutes needed to travel between two areas. Used by the itinerary validation.
- * Kept in code for launch; can move to an admin-editable setting later.
- */
-export function travelMinutes(a: string, b: string) {
-  if (a === b) return 15;
-  if (a === "Abu Dhabi" || b === "Abu Dhabi") return 90;
-  if (a === "Desert" || b === "Desert") return 60;
-  return 35;
-}
+// Experience categories, areas (with travel times) and package regions are admin-managed lists:
+// see models/Lookup and services/lookup.service.
 
 export const CURRENCY = "AED";

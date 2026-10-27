@@ -10,7 +10,9 @@
     "build": "tsc -p tsconfig.json",
     "start": "node dist/server.js",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "seed": "tsx src/seed/seed.ts"
+    "seed": "tsx src/seed/seed.ts",
+    "optimize-images": "tsx src/scripts/optimize-images.ts",
+    "fill-lookups": "tsx src/scripts/fill-lookups.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.135.0",
@@ -27,6 +29,7 @@
     "multer": "^2.4.0",
     "nodemailer": "^10.1.2",
     "pdfkit": "^0.20.2",
+    "sharp": "^0.34.5",
     "socket.io": "^4.8.4",
     "zod": "^4.6.7"
   },

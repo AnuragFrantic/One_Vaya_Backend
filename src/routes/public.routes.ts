@@ -12,6 +12,7 @@ const r = Router();
 r.get("/health", pub.health);
 
 // Catalogue & content
+r.get("/lookups", pub.lookups);
 r.get("/services", pub.listServices);
 r.get("/services/:slug", pub.getService);
 r.get("/experiences", pub.listExperiences);

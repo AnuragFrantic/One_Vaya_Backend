@@ -6,6 +6,7 @@ import { connectDB, disconnectDB } from "./config/db";
 import { createApp } from "./app";
 import { logger } from "./utils/logger";
 import { initSocket } from "./socket";
+import { ensureLookups } from "./services/lookup.service";
 
 /** Let's Encrypt certificate on the live server (orionaiglobal.com). */
 const LIVE_SSL = {
@@ -45,6 +46,8 @@ async function main() {
     const { seedAll } = await import("./seed/seed");
     await seedAll();
   }
+  // Categories / areas / regions lists: first-time values + any value existing records already use.
+  await ensureLookups();
 
   const app = createApp();
   const { server, protocol } = createServer(app);
