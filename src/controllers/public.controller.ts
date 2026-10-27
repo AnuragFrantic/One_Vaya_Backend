@@ -3,6 +3,7 @@ import { Service, Experience, HolidayPackage, Hotel, BlogPost, Faq, LegalPage, S
 import { ApiError } from "../utils/ApiError";
 import { ok, created } from "../utils/respond";
 import { features } from "../config/env";
+import { allLookups } from "../services/lookup.service";
 
 /*
  * Public website data (no sign-in). These endpoints replace the static data in
@@ -14,6 +15,11 @@ const PUBLIC_EXPERIENCE = "-costAED -__v";
 
 export async function health(_req: Request, res: Response) {
   ok(res, { status: "ok", time: new Date().toISOString(), features });
+}
+
+/** Experience categories, areas (with travel time) and package regions, managed in the admin panel. */
+export async function lookups(_req: Request, res: Response) {
+  ok(res, await allLookups());
 }
 
 export const listServices = async (_req: Request, res: Response) =>

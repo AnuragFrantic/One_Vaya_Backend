@@ -1,5 +1,6 @@
 import express from "express";
 import { IMAGES_ROOT } from "./services/storage.service";
+import { resizedImages } from "./middleware/resizedImages";
 import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
@@ -22,7 +23,9 @@ export function createApp() {
   app.use(
     "/uploads/images",
     helmet({ crossOriginResourcePolicy: { policy: "cross-origin" } }),
-    express.static(IMAGES_ROOT, { index: false, dotfiles: "deny", fallthrough: false, maxAge: "30d", immutable: true }),
+    resizedImages,
+    express.static(IMAGES_ROOT, { index: false, dotfiles: "deny", maxAge: "30d", immutable: true }),
+    (_req: express.Request, res: express.Response) => res.status(404).json({ success: false, message: "Image not found" }),
   );
 
   app.use(helmet());

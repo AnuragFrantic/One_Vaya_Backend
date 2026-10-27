@@ -1,4 +1,4 @@
-import { travelMinutes } from "../../config/constants";
+import { travelMinutes } from "../lookup.service";
 
 /**
  * Smart itinerary validation — the SAME rules as the website's Trip Builder

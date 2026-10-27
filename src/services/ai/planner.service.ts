@@ -6,9 +6,7 @@ import { PLANNER_SYSTEM } from "./prompts";
 import { autoPlan, validatePlan, type PlanItem, type RuleExperience } from "../itinerary/validation";
 import { loadRuleCatalog } from "../itinerary/catalog";
 import { logger } from "../../utils/logger";
-import { EXPERIENCE_CATEGORIES } from "../../config/constants";
 
-type Category = (typeof EXPERIENCE_CATEGORIES)[number];
 
 export type PlanRequest = {
   brief: string;
@@ -54,8 +52,8 @@ async function demoPlan(req: PlanRequest, catalog: Map<string, RuleExperience>):
   const t = req.brief.toLowerCase();
   let wanted = KEYWORDS.filter(([re]) => re.test(t)).map(([, id]) => id);
   if (req.interests?.length) {
-    const cats = req.interests.filter((i): i is Category => (EXPERIENCE_CATEGORIES as readonly string[]).includes(i));
-    const byCat = await Experience.find({ isPublished: true, category: { $in: cats } }).select("slug").lean();
+    // Interests are experience category names (admin-managed list).
+    const byCat = await Experience.find({ isPublished: true, category: { $in: req.interests } }).select("slug").lean();
     wanted.push(...byCat.map((e) => e.slug));
   }
   if (!wanted.length) wanted = ["burj-khalifa-at-the-top", "evening-desert-safari", "marina-dinner-cruise", "museum-of-the-future"];

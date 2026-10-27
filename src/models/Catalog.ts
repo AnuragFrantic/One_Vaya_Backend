@@ -1,5 +1,4 @@
 import { Schema, model, InferSchemaType } from "mongoose";
-import { AREAS, EXPERIENCE_CATEGORIES } from "../config/constants";
 
 /*
  * Catalogue managed by OneVaya staff in the admin panel:
@@ -36,8 +35,9 @@ const experienceSchema = new Schema(
   {
     slug: { type: String, required: true, unique: true },
     name: { type: String, required: true },
-    category: { type: String, enum: EXPERIENCE_CATEGORIES, required: true },
-    area: { type: String, enum: AREAS, required: true },
+    // Values come from the admin-managed lists (models/Lookup): experience-category and area.
+    category: { type: String, required: true, trim: true },
+    area: { type: String, required: true, trim: true },
     image: String,
     summary: String,
     description: String,

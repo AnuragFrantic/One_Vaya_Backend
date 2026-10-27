@@ -40,7 +40,6 @@ export function verifyLocalToken(token: string) {
   return { fullPath: resolveLocal(key), filename };
 }
 
-/** Public URL of an uploaded website image. */
 /** Public link for an uploaded image. `origin` = the address the request came in on (e.g. https://orionaiglobal.com:9877). */
 export function publicImageUrl(key: string, origin = env.API_URL) {
   return `${origin.replace(/\/$/, "")}/uploads/${key}`;
