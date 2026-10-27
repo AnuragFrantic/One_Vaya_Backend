@@ -14,18 +14,20 @@ export function signToken(userId: string, role: Role) {
 }
 
 /** Session cookie (httpOnly, so JavaScript can't read it). */
+const cookieOptions = () => ({
+  httpOnly: true,
+  secure: env.COOKIE_SECURE,
+  sameSite: env.COOKIE_SECURE ? ("none" as const) : ("lax" as const),
+  path: "/",
+});
+
 export function setSessionCookie(res: Response, token: string) {
-  res.cookie(env.COOKIE_NAME, token, {
-    httpOnly: true,
-    secure: env.COOKIE_SECURE,
-    sameSite: env.COOKIE_SECURE ? "none" : "lax",
-    maxAge: 7 * 24 * 60 * 60 * 1000,
-    path: "/",
-  });
+  res.cookie(env.COOKIE_NAME, token, { ...cookieOptions(), maxAge: 7 * 24 * 60 * 60 * 1000 });
 }
 
+/** Same attributes as when it was set: otherwise a browser ignores the clear on a cross-site (SameSite=None) cookie. */
 export function clearSessionCookie(res: Response) {
-  res.clearCookie(env.COOKIE_NAME, { path: "/" });
+  res.clearCookie(env.COOKIE_NAME, cookieOptions());
 }
 
 /**
