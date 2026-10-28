@@ -8,6 +8,7 @@ import type { Server } from "socket.io";
  *   staff                → every signed-in staff/admin (admin panel)
  *   user:<userId>        → one signed-in customer (all their tabs/devices)
  *   chat:<conversationId>→ everyone viewing one concierge conversation (guest + staff watching it)
+ * emitAll reaches every connection (e.g. every open website page).
  */
 let io: Server | null = null;
 
@@ -23,4 +24,8 @@ export const rooms = {
 
 export function emitTo(room: string | string[], event: string, payload: unknown) {
   io?.to(room).emit(event, payload);
+}
+
+export function emitAll(event: string, payload: unknown) {
+  io?.emit(event, payload);
 }
