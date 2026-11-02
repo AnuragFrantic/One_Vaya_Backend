@@ -68,3 +68,4 @@ export function renderQuotePdf(q: {
     doc.end();
   });
 }
+
