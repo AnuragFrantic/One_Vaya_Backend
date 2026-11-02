@@ -24,10 +24,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       # Same major version as NODE_MAJOR in deploy/bootstrap-server.sh
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: 24
           cache: npm
@@ -45,8 +45,13 @@ jobs:
           DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
         run: |
           install -m 700 -d ~/.ssh
-          printf '%s\n' "$DEPLOY_SSH_KEY" > ~/.ssh/deploy_key
+          # Undo common copy-paste damage: Windows line breaks, spaces around lines, blank lines.
+          printf '%s\n' "$DEPLOY_SSH_KEY" | tr -d '\r' | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' -e '/^$/d' > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
+          if ! ssh-keygen -y -f ~/.ssh/deploy_key > /dev/null; then
+            echo "::error::The DEPLOY_SSH_KEY secret isn't a readable private key. Paste ALL of the private key file, from -----BEGIN OPENSSH PRIVATE KEY----- to -----END OPENSSH PRIVATE KEY----- (not the .pub file)."
+            exit 1
+          fi
 
       - name: Upload and activate release
         run: |
