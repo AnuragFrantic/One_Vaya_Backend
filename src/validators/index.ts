@@ -178,4 +178,4 @@ export const paymentSchema = z.object({
 });
 
 export const staffCreateSchema = z.object({ name, email, password, role: z.enum(["staff", "admin"]).default("staff"), phone: z.string().max(40).optional() });
-export const userUpdateSchema = z.object({ role: z.enum(ROLES).optional(), isActive: z.boolean().optional(), name: name.optional(), phone: z.string().max(40).optional() });
+export const userUpdateSchema = z.object({ role: z.enum(ROLES).optional(), isActive: z.boolean().optional(), name: name.optional(), email: email.optional(), phone: z.string().max(40).optional() });

@@ -34,10 +34,13 @@ export async function createStaff(req: Request, res: Response) {
   created(res, await User.create({ ...rest, passwordHash: await hashPassword(password) }));
 }
 
-/** Admin only: change role, deactivate/reactivate, edit name/phone. */
+/** Admin only: change role, deactivate/reactivate, edit name/email/phone. */
 export async function updateUser(req: Request, res: Response) {
   if (req.params.id === req.user!.id && (req.body.role || req.body.isActive === false)) {
     throw ApiError.badRequest("You can't change your own role or deactivate yourself");
+  }
+  if (req.body.email && (await User.exists({ email: req.body.email, _id: { $ne: req.params.id } }))) {
+    throw ApiError.conflict("An account with this email already exists");
   }
   const user = await User.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
   if (!user) throw ApiError.notFound("User not found");
