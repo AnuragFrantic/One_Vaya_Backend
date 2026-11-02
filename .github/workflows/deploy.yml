@@ -1,0 +1,67 @@
+name: Deploy backend
+
+on:
+  push:
+    branches: [main]
+    paths-ignore: ["**.md"]
+  workflow_dispatch:
+
+# Deploys run one at a time, in order. A running deploy is never cancelled half way.
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+env:
+  DEPLOY_HOST: 65.0.148.190
+  DEPLOY_USER: deploy
+  APP_DIR: /var/www/onevaya-api
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      # Same major version as NODE_MAJOR in deploy/bootstrap-server.sh
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run build
+
+      # An explicit list, so the committed development .env never reaches the server.
+      - name: Bundle release
+        run: tar -czf release.tgz dist assets package.json package-lock.json ecosystem.config.js deploy/remote-deploy.sh
+
+      - name: Set up SSH key
+        env:
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$DEPLOY_SSH_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+
+      - name: Upload and activate release
+        run: |
+          RELEASE="$(date -u +%Y%m%d%H%M%S)-${GITHUB_SHA::7}"
+          SSH_OPTS="-i $HOME/.ssh/deploy_key -o IdentitiesOnly=yes -o BatchMode=yes -o StrictHostKeyChecking=yes -o UserKnownHostsFile=deploy/known_hosts"
+          scp $SSH_OPTS release.tgz "$DEPLOY_USER@$DEPLOY_HOST:$APP_DIR/incoming/$RELEASE.tgz"
+          ssh $SSH_OPTS "$DEPLOY_USER@$DEPLOY_HOST" "set -e
+            mkdir -p $APP_DIR/releases/$RELEASE
+            tar -xzf $APP_DIR/incoming/$RELEASE.tgz -C $APP_DIR/releases/$RELEASE
+            rm -f $APP_DIR/incoming/$RELEASE.tgz
+            bash $APP_DIR/releases/$RELEASE/deploy/remote-deploy.sh $RELEASE"
+
+      - name: Check the public API
+        run: curl -fsS --retry 5 --retry-delay 3 --retry-all-errors https://api.onevaya.ae/api/health
+
+      - name: Remove SSH key
+        if: always()
+        run: rm -f ~/.ssh/deploy_key

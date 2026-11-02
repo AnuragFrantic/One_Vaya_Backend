@@ -383,3 +383,32 @@ socket.emit("chat:message", { visitorId, conversationId, message: "Hi!" }, (res)
    With `SSL_*` empty the API runs on plain HTTP, which is what localhost development uses. If only one path is set, or a file is missing, the server stops at start-up with a clear message.
 
 No code changes are needed for any of these steps, only `.env` values.
+
+---
+
+## 11. Deployment (CI/CD)
+
+Every push to `main` deploys to `https://api.onevaya.ae` through GitHub Actions (`.github/workflows/deploy.yml`). You can also start it by hand from the repository's **Actions** tab. Pushes that only change `.md` files don't deploy.
+
+1. GitHub installs, type-checks and builds. If any step fails, nothing reaches the server.
+2. The build is uploaded to a new folder in `releases/`, and `npm ci --omit=dev` runs there.
+3. `current` is switched to the new release and PM2 restarts the API (a few seconds of downtime).
+4. If `/api/health` doesn't answer within about a minute, the previous release is restored and the run fails.
+
+The API runs on port 9877 behind Nginx, which handles HTTPS and Socket.io. It runs as one process, under the `deploy` user.
+
+```
+/var/www/onevaya-api/
+├── current -> releases/<time>-<commit>   the live release
+├── releases/                             the last 5 releases
+└── shared/
+    ├── .env                              production settings
+    └── uploads/                          uploaded files, kept between deploys
+```
+
+- **Settings:** the committed `.env` is for development and is never deployed. To change a production value, edit `shared/.env` on the server, then restart with `sudo -iu deploy pm2 restart onevaya-api --update-env`.
+- **GitHub secret:** `DEPLOY_SSH_KEY` is the private key of the `deploy` user, which has no sudo access.
+- **Logs and status:** `sudo -iu deploy pm2 logs onevaya-api` and `sudo -iu deploy pm2 ls`.
+- **Roll back by hand:** run `git revert` on the bad commit and push it.
+- **New server:** run `deploy/bootstrap-server.sh` once as root, create `shared/.env`, and update `deploy/known_hosts` and `DEPLOY_HOST` in the workflow. The HTTPS certificate renews automatically.
+- **Website and admin panel:** both share this server's IP. The website runs from `/var/www/onevaya-web` on port 3000 (see `deploy/` in the frontend repository). The admin panel is static files in `/var/www/onevaya-admin`, served by Nginx (see `deploy/` in the admin panel repository). Nginx refuses any other hostname (`deploy/nginx/00-default.conf`).
