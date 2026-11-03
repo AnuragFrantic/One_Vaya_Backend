@@ -31,13 +31,15 @@ export function clearSessionCookie(res: Response) {
 }
 
 /**
- * Reads the token from the session cookie or an `Authorization: Bearer …` header
- * and attaches `req.user`. Never fails: public routes work without a user.
+ * Reads the token from an `Authorization: Bearer …` header or the session cookie and attaches
+ * `req.user`. Never fails: public routes work without a user.
+ * The header wins: the website and the admin panel share one cookie for this API, so signing in to
+ * one in the same browser would otherwise replace the other's session. Each app sends its own token.
  */
 export async function attachUser(req: Request, _res: Response, next: NextFunction) {
   const header = req.headers.authorization;
-  const token = req.cookies?.[env.COOKIE_NAME] || (header?.startsWith("Bearer ") ? header.slice(7) : undefined);
-  const user = await userFromToken(token);
+  const bearer = header?.startsWith("Bearer ") ? header.slice(7) : undefined;
+  const user = (await userFromToken(bearer)) ?? (await userFromToken(req.cookies?.[env.COOKIE_NAME]));
   if (user) req.user = user;
   next();
 }
