@@ -86,7 +86,7 @@ async function pdfFor(id: string) {
   if (!q) throw ApiError.notFound("Quote not found");
   const pdf = await renderQuotePdf({
     ref: q.ref, title: q.title, customerName: q.customerName, startDate: q.startDate, endDate: q.endDate,
-    travellers: q.travellers, itinerary: q.itinerary, items: q.items, notes: q.notes, validUntil: q.validUntil,
+    travellers: q.travellers, itinerary: q.itinerary, items: q.items, notes: q.notes, validUntil: q.validUntil, currency: q.currency,
   });
   return { q, pdf };
 }
