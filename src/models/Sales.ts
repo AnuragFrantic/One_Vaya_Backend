@@ -1,5 +1,6 @@
 import { Schema, model, Types, InferSchemaType } from "mongoose";
 import { LEAD_SOURCES, LEAD_STATUSES, QUOTE_STATUSES, BOOKING_STATUSES } from "../config/constants";
+import { softDelete, softDeleteFields } from "./softDelete";
 
 /*
  * The core workflow from the proposal:
@@ -46,9 +47,11 @@ const leadSchema = new Schema(
     notes: [noteSchema],
     followUpAt: Date,
     assignedTo: { type: Types.ObjectId, ref: "User" },
+    ...softDeleteFields,
   },
   { timestamps: true },
 );
+leadSchema.plugin(softDelete);
 export const Lead = model("Lead", leadSchema);
 
 // ─────────────────────────── Quote ───────────────────────────
@@ -85,9 +88,11 @@ const quoteSchema = new Schema(
     sentAt: Date,
     respondedAt: Date,
     createdBy: { type: Types.ObjectId, ref: "User" },
+    ...softDeleteFields,
   },
   { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } },
 );
+quoteSchema.plugin(softDelete);
 quoteSchema.virtual("totalPrice").get(function () {
   return (this.items ?? []).reduce((s, i) => s + (i.qty ?? 1) * (i.unitPrice ?? 0), 0);
 });
@@ -124,9 +129,11 @@ const bookingSchema = new Schema(
     itinerary: [itineraryDaySchema],
     items: [bookingItemSchema],
     createdBy: { type: Types.ObjectId, ref: "User" },
+    ...softDeleteFields,
   },
   { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } },
 );
+bookingSchema.plugin(softDelete);
 bookingSchema.virtual("totalPrice").get(function () {
   return (this.items ?? []).filter((i) => i.status !== "cancelled").reduce((s, i) => s + (i.price ?? 0), 0);
 });

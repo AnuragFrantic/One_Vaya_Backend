@@ -58,6 +58,26 @@ const knowledgeSchema = new Schema(
 );
 export const ChatbotKnowledge = model("ChatbotKnowledge", knowledgeSchema);
 
+/** Homepage slider: the big picture, headline and buttons at the top of the website. Managed in the admin panel. */
+const heroSlideSchema = new Schema(
+  {
+    eyebrow: { type: String, default: "" }, // small line above the headline
+    title: { type: String, required: true }, // headline
+    titleAccent: { type: String, default: "" }, // optional second headline line, shown in italics
+    text: { type: String, default: "" }, // short paragraph
+    image: { type: String, required: true },
+    imageAlt: { type: String, default: "" }, // describes the picture for screen readers; the headline is used if empty
+    primaryLabel: { type: String, default: "" },
+    primaryLink: { type: String, default: "" },
+    secondaryLabel: { type: String, default: "" },
+    secondaryLink: { type: String, default: "" },
+    isPublished: { type: Boolean, default: true },
+    order: { type: Number, default: 0 },
+  },
+  { timestamps: true },
+);
+export const HeroSlide = model("HeroSlide", heroSlideSchema);
+
 const subscriberSchema = new Schema(
   { email: { type: String, required: true, unique: true, lowercase: true, trim: true } },
   { timestamps: true },

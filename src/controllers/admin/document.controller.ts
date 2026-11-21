@@ -6,6 +6,7 @@ import { keyOf, deleteFile, discardUpload, getDownloadUrl } from "../../services
 import { emails } from "../../services/email.service";
 import { documentMetaSchema } from "../../validators";
 import { safeName } from "../portal.controller";
+import { audit, auditEdit, snapshot } from "../../services/audit.service";
 
 /*
  * Proposal: "Upload the original PDF documents… Choose which documents the customer can see…
@@ -54,8 +55,12 @@ export async function addPendingDocument(req: Request, res: Response) {
 }
 
 export async function updateDocument(req: Request, res: Response) {
-  const doc = await TravelDocument.findByIdAndUpdate(req.params.docId, req.body, { new: true, runValidators: true });
+  const doc = await TravelDocument.findById(req.params.docId);
   if (!doc) throw ApiError.notFound("Document not found");
+  const before = snapshot(doc);
+  doc.set(req.body);
+  await doc.save();
+  await auditEdit(req, "document", doc._id, doc.name, before, snapshot(doc));
   ok(res, doc);
 }
 
@@ -64,6 +69,8 @@ export async function deleteDocument(req: Request, res: Response) {
   if (!doc) throw ApiError.notFound("Document not found");
   if (doc.fileKey) await deleteFile(doc.fileKey);
   await doc.deleteOne();
+  // A document is a file on disk, so this one is permanent: the log keeps who removed it and its name.
+  await audit(req, "document.delete", "document", doc._id, `Deleted document "${doc.name}"`, { name: doc.name, type: doc.type, booking: String(doc.booking ?? "") });
   ok(res, { deleted: true });
 }
 

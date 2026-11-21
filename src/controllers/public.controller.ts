@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import { Service, Experience, HolidayPackage, Hotel, BlogPost, Faq, LegalPage, Subscriber } from "../models";
+import { Service, Experience, HolidayPackage, Hotel, BlogPost, Faq, LegalPage, Subscriber, HeroSlide } from "../models";
 import { ApiError } from "../utils/ApiError";
 import { ok, created } from "../utils/respond";
 import { features } from "../config/env";
@@ -21,6 +21,10 @@ export async function health(_req: Request, res: Response) {
 export async function lookups(_req: Request, res: Response) {
   ok(res, await allLookups());
 }
+
+/** Homepage slider: published slides, in the order set in the admin panel. */
+export const listHeroSlides = async (_req: Request, res: Response) =>
+  ok(res, await HeroSlide.find({ isPublished: true }).select("-__v -createdAt -updatedAt -isPublished").sort("order createdAt").lean());
 
 export const listServices = async (_req: Request, res: Response) =>
   ok(res, await Service.find({ isPublished: true }).sort("order title").lean());

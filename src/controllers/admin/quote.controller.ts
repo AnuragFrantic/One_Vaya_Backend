@@ -7,6 +7,7 @@ import { renderQuotePdf } from "../../services/pdf.service";
 import { emails } from "../../services/email.service";
 import { validatePlan, type PlanItem } from "../../services/itinerary/validation";
 import { loadRuleCatalog } from "../../services/itinerary/catalog";
+import { auditEdit, snapshot } from "../../services/audit.service";
 
 export async function listQuotes(req: Request, res: Response) {
   const { page, limit, skip, sort } = paging(req.query);
@@ -37,6 +38,7 @@ export async function createQuote(req: Request, res: Response) {
 export async function updateQuote(req: Request, res: Response) {
   const q = await Quote.findById(req.params.id);
   if (!q) throw ApiError.notFound("Quote not found");
+  const before = snapshot(q);
   const { status, ...rest } = req.body;
   q.set(rest);
   if (status && status !== q.status) {
@@ -47,6 +49,7 @@ export async function updateQuote(req: Request, res: Response) {
     }
   }
   await q.save();
+  await auditEdit(req, "quote", q._id, q.ref, before, snapshot(q));
   ok(res, q);
 }
 

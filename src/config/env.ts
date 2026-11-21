@@ -40,6 +40,8 @@ const schema = z.object({
   AI_CHAT_MODEL: z.string().default("claude-haiku-5-5"),
   AI_PLANNER_MODEL: z.string().default("claude-sonnet-5-5"),
   AI_CHAT_MAX_TURNS: z.coerce.number().default(20),
+  // An archived chat can only be deleted for good after this many days (time to change your mind).
+  CHAT_DELETE_GRACE_DAYS: z.coerce.number().int().min(0).default(7),
 
   SMTP_HOST: z.string().optional().default(""),
   SMTP_PORT: z.coerce.number().default(587),

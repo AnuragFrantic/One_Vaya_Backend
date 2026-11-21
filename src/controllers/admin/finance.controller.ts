@@ -3,6 +3,7 @@ import { Booking, Invoice, Payment } from "../../models";
 import { ApiError } from "../../utils/ApiError";
 import { ok, created } from "../../utils/respond";
 import { nextReference, paging } from "../../utils/helpers";
+import { audit, auditEdit, snapshot } from "../../services/audit.service";
 
 /*
  * Manual payments & invoices (proposal: no online payment gateway).
@@ -38,22 +39,20 @@ export async function createInvoice(req: Request, res: Response) {
     amountAED: items.reduce((s, i) => s + i.amount, 0),
     createdBy: req.user!.id,
   });
+  await audit(req, "invoice.create", "invoice", inv._id, `Created invoice ${inv.no}`, { no: inv.no, amountAED: inv.amountAED });
   created(res, inv);
 }
 
 export async function updateInvoice(req: Request, res: Response) {
   const inv = await Invoice.findById(req.params.id);
   if (!inv) throw ApiError.notFound("Invoice not found");
+  const before = snapshot(inv);
   const { bookingId: _b, ...rest } = req.body;
   inv.set(rest);
   if (rest.items) inv.amountAED = (rest.items as { amount: number }[]).reduce((s, i) => s + i.amount, 0);
   await inv.save();
+  await auditEdit(req, "invoice", inv._id, inv.no, before, snapshot(inv));
   ok(res, inv);
-}
-
-export async function deleteInvoice(req: Request, res: Response) {
-  if (!(await Invoice.findByIdAndDelete(req.params.id))) throw ApiError.notFound("Invoice not found");
-  ok(res, { deleted: true });
 }
 
 export async function listPayments(req: Request, res: Response) {
@@ -70,10 +69,8 @@ export async function listPayments(req: Request, res: Response) {
 export async function recordPayment(req: Request, res: Response) {
   const { bookingId, invoiceId, ...rest } = req.body;
   const b = await bookingOr404(bookingId);
-  created(res, await Payment.create({ ...rest, booking: b._id, invoice: invoiceId, customer: b.customer, recordedBy: req.user!.id }));
+  const payment = await Payment.create({ ...rest, booking: b._id, invoice: invoiceId, customer: b.customer, recordedBy: req.user!.id });
+  await audit(req, "payment.create", "payment", payment._id, `Recorded a payment of AED ${payment.amountAED} on booking ${b.ref}`, { amountAED: payment.amountAED, method: payment.method });
+  created(res, payment);
 }
 
-export async function deletePayment(req: Request, res: Response) {
-  if (!(await Payment.findByIdAndDelete(req.params.id))) throw ApiError.notFound("Payment not found");
-  ok(res, { deleted: true });
-}

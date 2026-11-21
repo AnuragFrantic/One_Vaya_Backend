@@ -1,5 +1,6 @@
 import { Schema, model, Types } from "mongoose";
 import { DOCUMENT_TYPES, PAYMENT_METHODS, THREAD_KINDS, THREAD_STATUSES } from "../config/constants";
+import { softDelete, softDeleteFields } from "./softDelete";
 
 /* Everything attached to a booking: documents, invoices, payments, messages; plus chat logs. */
 
@@ -41,9 +42,11 @@ const invoiceSchema = new Schema(
     notes: String,
     visibleToCustomer: { type: Boolean, default: true },
     createdBy: { type: Types.ObjectId, ref: "User" },
+    ...softDeleteFields,
   },
   { timestamps: true },
 );
+invoiceSchema.plugin(softDelete);
 export const Invoice = model("Invoice", invoiceSchema);
 
 const paymentSchema = new Schema(
@@ -57,9 +60,11 @@ const paymentSchema = new Schema(
     reference: String,
     note: String,
     recordedBy: { type: Types.ObjectId, ref: "User" },
+    ...softDeleteFields,
   },
   { timestamps: true },
 );
+paymentSchema.plugin(softDelete);
 export const Payment = model("Payment", paymentSchema);
 
 // ─────────────────────────── Messages & change requests ───────────────────────────
@@ -80,9 +85,11 @@ const threadSchema = new Schema(
         at: { type: Date, default: Date.now },
       },
     ],
+    ...softDeleteFields,
   },
   { timestamps: true },
 );
+threadSchema.plugin(softDelete);
 export const Thread = model("Thread", threadSchema);
 
 // ─────────────────────────── AI chat logs (for staff review) ───────────────────────────
@@ -98,6 +105,9 @@ const conversationSchema = new Schema(
     staffActive: { type: Boolean, default: false },
     staffMember: { type: Types.ObjectId, ref: "User" },
     mode: { type: String, enum: ["ai", "demo"], default: "demo" },
+    // Archived chats are hidden from the working list but kept; they can be restored, or deleted after the grace period.
+    archivedAt: { type: Date, index: true },
+    archivedBy: { type: Types.ObjectId, ref: "User" },
   },
   { timestamps: true },
 );

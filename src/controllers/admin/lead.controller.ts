@@ -1,9 +1,10 @@
 import type { Request, Response } from "express";
-import { Lead, Quote, Experience } from "../../models";
+import { Lead, Quote, Experience, User } from "../../models";
 import { ApiError } from "../../utils/ApiError";
 import { ok, created } from "../../utils/respond";
 import { escapeRegex, nextReference, paging } from "../../utils/helpers";
 import { addDays } from "../../services/itinerary/validation";
+import { auditEdit, snapshot } from "../../services/audit.service";
 
 /** GET /api/admin/leads?status=new&source=trip_builder&q=aisha */
 export async function listLeads(req: Request, res: Response) {
@@ -28,9 +29,19 @@ export async function getLead(req: Request, res: Response) {
   ok(res, { ...lead, quotes });
 }
 
+/** Status, follow-up, assignee and the contact details (name, email, phone). Every change is logged. */
 export async function updateLead(req: Request, res: Response) {
-  const lead = await Lead.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+  const lead = await Lead.findById(req.params.id);
   if (!lead) throw ApiError.notFound("Lead not found");
+  const before = snapshot(lead);
+  const patch = { ...req.body } as Record<string, unknown>;
+  // A new email may belong to a registered customer: keep the lead linked to the right account.
+  if (typeof patch.email === "string" && patch.email !== lead.email) {
+    patch.customer = (await User.findOne({ email: patch.email, role: "customer" }).select("_id").lean())?._id ?? null;
+  }
+  lead.set(patch);
+  await lead.save();
+  await auditEdit(req, "lead", lead._id, lead.ref, before, snapshot(lead));
   ok(res, lead);
 }
 

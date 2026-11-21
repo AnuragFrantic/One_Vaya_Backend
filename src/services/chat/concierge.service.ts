@@ -50,6 +50,8 @@ export async function handleConciergeMessage({ conversationId, visitorId, messag
 
   const now = new Date();
   const added: ChatMessageOut[] = [{ role: "user", text: message, at: now }];
+  // The guest came back to a chat the team had archived: it is a live conversation again.
+  if (convo.archivedAt) convo.set({ archivedAt: undefined, archivedBy: undefined });
 
   if (convo.staffActive) {
     // A team member is answering personally: store the message and let them see it live.

@@ -5,6 +5,7 @@ import { ok, created } from "../../utils/respond";
 import { escapeRegex, nextReference, paging, randomToken, sha256 } from "../../utils/helpers";
 import { emails } from "../../services/email.service";
 import { env } from "../../config/env";
+import { auditEdit, snapshot } from "../../services/audit.service";
 
 export async function listBookings(req: Request, res: Response) {
   const { page, limit, skip, sort } = paging(req.query);
@@ -99,7 +100,9 @@ export async function convertQuote(req: Request, res: Response) {
 export async function updateBooking(req: Request, res: Response) {
   const b = await Booking.findById(req.params.id);
   if (!b) throw ApiError.notFound("Booking not found");
+  const before = snapshot(b);
   b.set(req.body);
   await b.save();
+  await auditEdit(req, "booking", b._id, b.ref, before, snapshot(b));
   ok(res, b);
 }

@@ -19,6 +19,7 @@ const isType = (v: unknown): v is LookupType => (LOOKUP_TYPES as readonly string
 function clean(body: Record<string, unknown>, type: LookupType) {
   const name = typeof body.name === "string" ? body.name.trim() : "";
   if (!name) throw ApiError.badRequest("Enter a name");
+  if (name.length > 80) throw ApiError.badRequest("Name is too long (max 80 characters)", [{ field: "name", message: "Name is too long (max 80 characters)" }]);
   const order = body.order === undefined || body.order === "" ? 0 : Number(body.order);
   const out: Record<string, unknown> = { type, name, order: Number.isFinite(order) ? order : 0 };
   if (type === "area") {

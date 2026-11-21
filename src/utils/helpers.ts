@@ -5,18 +5,27 @@ import { Model } from "mongoose";
 export async function nextReference(model: Model<any>, prefix: string) {
   for (let i = 0; i < 10; i++) {
     const ref = `${prefix}-${crypto.randomInt(10000, 99999)}`;
-    if (!(await model.exists({ ref }))) return ref;
+    if (!(await model.exists({ ref }).setOptions({ withDeleted: true }))) return ref;
   }
   return `${prefix}-${Date.now().toString().slice(-7)}`;
 }
 
-export const slugify = (s: string) =>
+/**
+ * Turns a title into a web address piece: "Dubai Signature Escape" → "dubai-signature-escape".
+ * Accents are dropped (Café → cafe), "&" becomes "and", anything else that isn't a letter or number becomes
+ * a single hyphen, and the result never starts or ends with one. Titles with no Latin letters or digits
+ * (for example Arabic only) give "" so the caller can choose a fallback.
+ */
+export const slugify = (s: string, max = 80) =>
   s
-    .toLowerCase()
     .normalize("NFKD")
-    .replace(/[^\w\s-]/g, "")
-    .trim()
-    .replace(/[\s_-]+/g, "-");
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/&/g, " and ")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, max)
+    .replace(/-+$/g, "");
 
 /** Standard list query params: ?page=1&limit=20&q=search&sort=-createdAt */
 export function paging(query: Record<string, unknown>) {

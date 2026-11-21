@@ -53,6 +53,42 @@ function limiter(max: number, windowMs: number) {
   };
 }
 
+/**
+ * Per-IP limit shared by all of that visitor's connections, so reconnecting (or opening many tabs)
+ * doesn't reset it. Old entries are dropped as they expire.
+ */
+function sharedLimiter(max: number, windowMs: number) {
+  const hits = new Map<string, number[]>();
+  setInterval(() => {
+    const now = Date.now();
+    for (const [key, list] of hits) {
+      const fresh = list.filter((t) => now - t < windowMs);
+      if (fresh.length) hits.set(key, fresh);
+      else hits.delete(key);
+    }
+  }, windowMs).unref();
+  return (key: string) => {
+    const now = Date.now();
+    const list = (hits.get(key) ?? []).filter((t) => now - t < windowMs);
+    if (list.length >= max) return false;
+    list.push(now);
+    hits.set(key, list);
+    return true;
+  };
+}
+
+/** Visitor IP. Behind Nginx (one proxy, like Express "trust proxy" 1) it's the last X-Forwarded-For entry. */
+function clientIp(socket: Socket) {
+  const fwd = socket.handshake.headers["x-forwarded-for"];
+  const last = (Array.isArray(fwd) ? fwd.join(",") : fwd ?? "").split(",").map((s) => s.trim()).filter(Boolean).pop();
+  return last || socket.handshake.address;
+}
+
+const TESTING = env.NODE_ENV === "test";
+/** Guest / customer chat messages per IP, across all their connections. */
+const allowIpMessage = sharedLimiter(TESTING ? 1000 : 30, 60_000);
+const TOO_FAST = "You're sending messages too quickly. Please wait a minute and try again.";
+
 const isStaff = (u?: SessionUser) => u?.role === "staff" || u?.role === "admin";
 const history = (c: { messages: { role?: string | null; text?: string | null; name?: string | null; at?: Date | null }[] }) =>
   c.messages.map((m) => ({ role: m.role, text: m.text, name: m.name ?? undefined, at: m.at }));
@@ -73,7 +109,10 @@ export function initSocket(httpServer: HttpServer) {
     const ctx: Ctx = { socket, user: socket.data.user as SessionUser | undefined };
     if (ctx.user?.role === "customer") void socket.join(rooms.user(ctx.user.id));
     if (isStaff(ctx.user)) void socket.join(rooms.staff);
-    const allowMessage = limiter(env.NODE_ENV === "test" ? 1000 : 12, 60_000);
+    const ip = clientIp(socket);
+    const allowMessage = limiter(TESTING ? 1000 : 12, 60_000); // per connection
+    const allowStaffMessage = limiter(TESTING ? 1000 : 60, 60_000);
+    const allowTyping = limiter(TESTING ? 1000 : 120, 60_000);
 
     /** Wraps a handler: validates nothing itself, but turns thrown errors into an ack. */
     const on = <T>(event: string, fn: (payload: T, ack: Ack) => Promise<void>) =>
@@ -101,7 +140,7 @@ export function initSocket(httpServer: HttpServer) {
     on<unknown>("chat:message", async (payload, ack) => {
       const p = chatSchema.safeParse(payload);
       if (!p.success) return ack({ ok: false, error: "Please type a message (up to 1,500 characters)." });
-      if (!allowMessage()) return ack({ ok: false, error: "You're sending messages too quickly. Please wait a moment." });
+      if (!allowMessage() || !allowIpMessage(ip)) return ack({ ok: false, error: TOO_FAST });
 
       const existing = await findOwnConversation(p.data.conversationId, p.data.visitorId, ctx.user);
       const thinking = !existing?.staffActive;
@@ -118,7 +157,7 @@ export function initSocket(httpServer: HttpServer) {
 
     on<unknown>("chat:typing", async (payload) => {
       const p = z.object({ conversationId: z.string(), typing: z.boolean() }).safeParse(payload);
-      if (!p.success || !socket.rooms.has(rooms.chat(p.data.conversationId))) return;
+      if (!p.success || !socket.rooms.has(rooms.chat(p.data.conversationId)) || !allowTyping()) return;
       socket.to(rooms.chat(p.data.conversationId)).emit("chat:typing", { conversationId: p.data.conversationId, who: isStaff(ctx.user) ? "staff" : "guest", typing: p.data.typing });
     });
 
@@ -137,8 +176,10 @@ export function initSocket(httpServer: HttpServer) {
       if (!isStaff(ctx.user)) return ack({ ok: false, error: "Staff only" });
       const p = staffMessageSchema.safeParse(payload);
       if (!p.success) return ack({ ok: false, error: "Type a reply (up to 2,000 characters)." });
+      if (!allowStaffMessage()) return ack({ ok: false, error: TOO_FAST });
       const convo = await ChatConversation.findById(p.data.conversationId);
       if (!convo) return ack({ ok: false, error: "Chat not found" });
+      if (convo.archivedAt) return ack({ ok: false, error: "This chat is archived. Restore it before replying." });
 
       const id = String(convo._id);
       const name = ctx.user!.name.split(" ")[0];

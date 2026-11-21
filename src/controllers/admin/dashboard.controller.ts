@@ -18,7 +18,7 @@ export async function dashboard(_req: Request, res: Response) {
       Booking.find({ startDate: { $gte: today, $lte: in30 }, status: { $ne: "cancelled" } }).select("ref title startDate customer").populate("customer", "name").sort("startDate").limit(10).lean(),
       TravelDocument.countDocuments({ status: "pending" }),
       Thread.countDocuments({ status: "open" }),
-      ChatConversation.countDocuments({ handoffRequested: true }),
+      ChatConversation.countDocuments({ handoffRequested: true, archivedAt: null }),
       Payment.aggregate([{ $group: { _id: null, total: { $sum: "$amountAED" } } }]),
       Invoice.aggregate([{ $group: { _id: null, total: { $sum: "$amountAED" } } }]),
       Booking.find({ status: { $ne: "cancelled" } }).select("items"),

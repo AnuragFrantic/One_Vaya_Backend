@@ -15,6 +15,9 @@ import * as users from "../controllers/admin/user.controller";
 import * as catalog from "../controllers/admin/catalog.controller";
 import * as uploads from "../controllers/admin/upload.controller";
 import * as lookups from "../controllers/admin/lookup.controller";
+import * as auditLog from "../controllers/admin/audit.controller";
+import * as records from "../controllers/admin/records.controller";
+import { slides } from "../controllers/admin/slide.controller";
 
 /** Admin panel API. Staff and admins only; some actions are admin-only. */
 const r = Router();
@@ -58,10 +61,8 @@ r.get("/documents/pending", docs.pendingDocuments);
 r.get("/invoices", fin.listInvoices);
 r.post("/invoices", validate(v.invoiceSchema), fin.createInvoice);
 r.patch("/invoices/:id", validate(v.invoiceUpdateSchema), fin.updateInvoice);
-r.delete("/invoices/:id", requireAdmin, fin.deleteInvoice);
 r.get("/payments", fin.listPayments);
 r.post("/payments", validate(v.paymentSchema), fin.recordPayment);
-r.delete("/payments/:id", requireAdmin, fin.deletePayment);
 
 // ── Messages, change requests & AI chats ──
 r.get("/threads", threads.listThreads);
@@ -70,6 +71,19 @@ r.post("/threads/:id/reply", validate(v.threadReplySchema), threads.replyThread)
 r.patch("/threads/:id/status", threads.setThreadStatus);
 r.get("/chats", threads.listChats);
 r.get("/chats/:id", threads.getChat);
+r.post("/chats/:id/archive", threads.archiveChat);
+r.post("/chats/:id/restore", threads.restoreChat);
+r.delete("/chats/:id", requireAdmin, threads.deleteChat); // permanent: admins only, archived chats only
+
+
+
+// ── Delete / restore / Trash (admins only). A delete is reversible: nothing is erased. ──
+r.delete("/records/:entity/:id", requireAdmin, records.removeRecord);
+r.post("/records/:entity/:id/restore", requireAdmin, records.restoreRecord);
+r.get("/trash", requireAdmin, records.listTrash);
+
+// ── Audit log (admins only) ──
+r.get("/audit-log", requireAdmin, auditLog.listAudit);
 
 // ── Reports ──
 r.get("/reports/sales", reports.salesReport);
@@ -81,8 +95,11 @@ r.post("/users", requireAdmin, validate(v.staffCreateSchema), users.createStaff)
 r.patch("/users/:id", requireAdmin, validate(v.userUpdateSchema), users.updateUser);
 
 // ── Catalogue & content (CRUD) ──
-const mount = (path: string, ctl: ReturnType<typeof import("../controllers/admin/crud.factory").crud>) => {
+type Crud = ReturnType<typeof import("../controllers/admin/crud.factory").crud>;
+// The lists screen (lookups) has its own controller without web addresses, so slugCheck is optional.
+const mount = (path: string, ctl: Omit<Crud, "slugCheck"> & Partial<Pick<Crud, "slugCheck">>) => {
   r.get(`/${path}`, ctl.list);
+  if (ctl.slugCheck) r.get(`/${path}/slug-check`, ctl.slugCheck); // before /:id, or "slug-check" would be read as an id
   r.post(`/${path}`, ctl.create);
   r.get(`/${path}/:id`, ctl.get);
   r.patch(`/${path}/:id`, ctl.update);
@@ -96,6 +113,14 @@ mount("blog", catalog.blog);
 mount("faqs", catalog.faqs);
 mount("legal", catalog.legal);
 mount("chatbot-knowledge", catalog.knowledge);
+
+// Homepage slider. "reorder" comes before "/:id" so it isn't read as an id.
+r.get("/slides", slides.list);
+r.post("/slides/reorder", validate(v.slideReorderSchema), slides.reorder);
+r.post("/slides", validate(v.slideSchema), slides.create);
+r.get("/slides/:id", slides.get);
+r.patch("/slides/:id", validate(v.slideUpdateSchema), slides.update);
+r.delete("/slides/:id", requireAdmin, slides.remove);
 
 // Lists: experience categories, areas (travel time) and package regions
 mount("lookups", lookups);

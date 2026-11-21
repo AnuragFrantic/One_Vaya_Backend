@@ -4,3 +4,8 @@ dist
 uploads/*
 !uploads/.gitkeep
 *.log
+
+# Secrets stay on the server (shared/.env) and on your machine, never in git
+.env
+.env.*
+!.env.example

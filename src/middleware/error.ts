@@ -33,7 +33,10 @@ export function errorHandler(err: unknown, req: Request, res: Response, _next: N
   } else if (err instanceof MulterError) {
     status = 400;
     const limit = req.originalUrl.includes("/uploads/image") ? env.MAX_IMAGE_MB : env.MAX_UPLOAD_MB;
-    message = err.code === "LIMIT_FILE_SIZE" ? `File is larger than ${limit} MB` : err.message;
+    message =
+      err.code === "LIMIT_FILE_SIZE" ? `File is larger than ${limit} MB. Choose a smaller file.`
+      : err.code === "LIMIT_UNEXPECTED_FILE" || err.code === "LIMIT_FILE_COUNT" ? "Upload one file at a time."
+      : err.message;
   }
 
   if (status >= 500) logger.error(err);

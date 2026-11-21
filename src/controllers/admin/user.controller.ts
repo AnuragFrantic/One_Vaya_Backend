@@ -3,6 +3,7 @@ import { User, Booking, Lead, hashPassword } from "../../models";
 import { ApiError } from "../../utils/ApiError";
 import { ok, created } from "../../utils/respond";
 import { escapeRegex, paging } from "../../utils/helpers";
+import { audit, auditEdit, snapshot } from "../../services/audit.service";
 
 /** GET /api/admin/users?role=customer&q=… — customers (with trip history) and staff. */
 export async function listUsers(req: Request, res: Response) {
@@ -31,7 +32,9 @@ export async function getUser(req: Request, res: Response) {
 export async function createStaff(req: Request, res: Response) {
   const { password, ...rest } = req.body;
   if (await User.exists({ email: rest.email })) throw ApiError.conflict("An account with this email already exists");
-  created(res, await User.create({ ...rest, passwordHash: await hashPassword(password) }));
+  const user = await User.create({ ...rest, passwordHash: await hashPassword(password) });
+  await audit(req, "user.create", "user", user._id, `Created ${user.role} account ${user.email}`, { role: user.role });
+  created(res, user);
 }
 
 /** Admin only: change role, deactivate/reactivate, edit name/email/phone. */
@@ -42,7 +45,13 @@ export async function updateUser(req: Request, res: Response) {
   if (req.body.email && (await User.exists({ email: req.body.email, _id: { $ne: req.params.id } }))) {
     throw ApiError.conflict("An account with this email already exists");
   }
-  const user = await User.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+  const user = await User.findById(req.params.id);
   if (!user) throw ApiError.notFound("User not found");
+  const before = snapshot(user);
+  user.set(req.body);
+  await user.save();
+  // Role and access changes are the ones worth reading back later: the log records the new role and active state.
+  const after = snapshot(user);
+  await auditEdit(req, "user", user._id, user.email, before, after);
   ok(res, user);
 }
