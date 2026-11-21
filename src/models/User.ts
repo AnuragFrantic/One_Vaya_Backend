@@ -1,6 +1,7 @@
 import { Schema, model, InferSchemaType, HydratedDocument } from "mongoose";
 import bcrypt from "bcryptjs";
 import { ROLES } from "../config/constants";
+import { softDelete, softDeleteFields } from "./softDelete";
 
 /** Customers, staff and admins share one collection, separated by `role`. */
 const userSchema = new Schema(
@@ -15,9 +16,12 @@ const userSchema = new Schema(
     lastLoginAt: Date,
     resetTokenHash: { type: String, select: false },
     resetTokenExpires: { type: Date, select: false },
+    ...softDeleteFields,
   },
   { timestamps: true },
 );
+
+userSchema.plugin(softDelete); // a deleted account can't sign in and disappears from every list; the Trash can restore it
 
 userSchema.methods.checkPassword = function (this: { passwordHash: string }, plain: string) {
   return bcrypt.compare(plain, this.passwordHash);

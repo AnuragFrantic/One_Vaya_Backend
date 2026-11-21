@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
 import type { Model, Types } from "mongoose";
-import { Booking, Invoice, Lead, Payment, Quote, Thread, TravelDocument } from "../../models";
+import { Booking, Invoice, Lead, Payment, Quote, Thread, TravelDocument, User } from "../../models";
 import { ApiError } from "../../utils/ApiError";
 import { ok } from "../../utils/respond";
 import { audit } from "../../services/audit.service";
@@ -17,7 +17,7 @@ type Spec = {
   ref: (d: Doc) => string; // short identifier, shown in the log and the Trash
   title: (d: Doc) => string; // what the person sees in the Trash
   /** Why this record can't be deleted right now (it is still needed by other records). */
-  blocker?: (d: Doc) => Promise<string | undefined>;
+  blocker?: (d: Doc, req: Request) => Promise<string | undefined>;
   /** Why this record can't be restored right now. */
   restoreBlocker?: (d: Doc) => Promise<string | undefined>;
 };
@@ -55,6 +55,25 @@ const SPECS: Record<string, Spec> = {
       return parts.length ? `This booking still has ${list(parts)}. Remove them first, so nothing is left without a booking.` : undefined;
     },
   },
+  users: {
+    entity: "user",
+    model: User,
+    ref: (d) => d.email,
+    title: (d) => `${d.name} · ${d.role}${d.isActive ? "" : " · inactive"}`,
+    blocker: async (d, req) => {
+      if (String(d._id) === req.user!.id) return "You can't delete your own account.";
+      if (d.role === "admin") {
+        const others = await User.countDocuments({ role: "admin", isActive: true, _id: { $ne: d._id } });
+        if (!others) return "This is the only active admin. Make another admin first.";
+      }
+      if (d.role === "customer") {
+        const [bookings, quotes] = await Promise.all([Booking.countDocuments({ customer: d._id }), Quote.countDocuments({ customer: d._id })]);
+        const parts = [bookings && plural(bookings, "booking"), quotes && plural(quotes, "quote")].filter(Boolean) as string[];
+        if (parts.length) return `This customer has ${list(parts)}. Their history must stay readable, so mark the account inactive instead.`;
+      }
+      return undefined;
+    },
+  },
   threads: { entity: "thread", model: Thread, ref: (d) => String(d._id).slice(-6), title: (d) => d.subject },
   invoices: {
     entity: "invoice",
@@ -88,7 +107,7 @@ export async function removeRecord(req: Request, res: Response) {
   const spec = specFor(String(req.params.entity));
   const doc = (await spec.model.findById(req.params.id)) as Doc | null;
   if (!doc) throw ApiError.notFound(`${cap(spec.entity)} not found`);
-  const why = await spec.blocker?.(doc);
+  const why = await spec.blocker?.(doc, req);
   if (why) throw new ApiError(409, why);
   doc.set({ deletedAt: new Date(), deletedBy: req.user!.id });
   await doc.save({ validateModifiedOnly: true });

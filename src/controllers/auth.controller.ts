@@ -23,7 +23,9 @@ function startSession(res: Response, user: { _id: unknown; role: string }) {
 
 export async function register(req: Request, res: Response) {
   const { name, email, password, phone } = req.body;
-  if (await User.exists({ email })) throw ApiError.conflict("An account with this email already exists. Please sign in.");
+  const taken = await User.findOne({ email }).setOptions({ withDeleted: true }).select("deletedAt").lean();
+  if (taken?.deletedAt) throw ApiError.conflict("This email can't be used to create an account. Please contact us.");
+  if (taken) throw ApiError.conflict("An account with this email already exists. Please sign in.");
   const user = await User.create({ name, email, phone, passwordHash: await hashPassword(password), role: "customer" });
   await linkRecordsByEmail(String(user._id), email);
   const token = startSession(res, user);
@@ -33,9 +35,10 @@ export async function register(req: Request, res: Response) {
 export async function login(req: Request, res: Response) {
   const { email, password } = req.body;
   const user = await User.findOne({ email }).select("+passwordHash");
-  if (!user || !user.isActive || !(await (user as unknown as { checkPassword(p: string): Promise<boolean> }).checkPassword(password))) {
-    throw ApiError.unauthorized("Email or password is incorrect");
-  }
+  const passwordOk = !!user && (await (user as unknown as { checkPassword(p: string): Promise<boolean> }).checkPassword(password));
+  if (!user || !passwordOk) throw ApiError.unauthorized("Email or password is incorrect");
+  // Said only after the right password, so it doesn't reveal which emails have accounts.
+  if (!user.isActive) throw new ApiError(403, "This account is inactive. Please contact us to reactivate it.");
   user.lastLoginAt = new Date();
   await user.save();
   if (user.role === "customer") await linkRecordsByEmail(String(user._id), email);

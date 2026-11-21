@@ -47,7 +47,8 @@ export async function getBooking(req: Request, res: Response) {
 
 /** Finds the customer account for a quote, or creates one and emails a "set your password" link. */
 async function ensureCustomer(name: string, email: string) {
-  const existing = await User.findOne({ email });
+  const existing = await User.findOne({ email }).setOptions({ withDeleted: true });
+  if (existing?.get("deletedAt")) throw ApiError.conflict("This customer's account was deleted. Restore it from the Trash first.");
   if (existing) return existing;
   const token = randomToken();
   const user = await User.create({

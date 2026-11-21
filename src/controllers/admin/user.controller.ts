@@ -5,6 +5,16 @@ import { ok, created } from "../../utils/respond";
 import { escapeRegex, paging } from "../../utils/helpers";
 import { audit, auditEdit, snapshot } from "../../services/audit.service";
 
+/** Refuses an email that belongs to another account, including a deleted one (it is only in the Trash). */
+async function assertEmailFree(email: string, exceptId?: string | string[]) {
+  const hit = await User.findOne({ email, ...(exceptId ? { _id: { $ne: exceptId } } : {}) })
+    .setOptions({ withDeleted: true })
+    .select("deletedAt")
+    .lean();
+  if (!hit) return;
+  throw ApiError.conflict(hit.deletedAt ? "This email belongs to a deleted account. Restore it from the Trash instead." : "An account with this email already exists");
+}
+
 /** GET /api/admin/users?role=customer&q=… — customers (with trip history) and staff. */
 export async function listUsers(req: Request, res: Response) {
   const { page, limit, skip, sort } = paging(req.query);
@@ -31,7 +41,7 @@ export async function getUser(req: Request, res: Response) {
 /** Admin only: create a staff or admin account. */
 export async function createStaff(req: Request, res: Response) {
   const { password, ...rest } = req.body;
-  if (await User.exists({ email: rest.email })) throw ApiError.conflict("An account with this email already exists");
+  await assertEmailFree(rest.email);
   const user = await User.create({ ...rest, passwordHash: await hashPassword(password) });
   await audit(req, "user.create", "user", user._id, `Created ${user.role} account ${user.email}`, { role: user.role });
   created(res, user);
@@ -42,9 +52,7 @@ export async function updateUser(req: Request, res: Response) {
   if (req.params.id === req.user!.id && (req.body.role || req.body.isActive === false)) {
     throw ApiError.badRequest("You can't change your own role or deactivate yourself");
   }
-  if (req.body.email && (await User.exists({ email: req.body.email, _id: { $ne: req.params.id } }))) {
-    throw ApiError.conflict("An account with this email already exists");
-  }
+  if (req.body.email) await assertEmailFree(req.body.email, req.params.id);
   const user = await User.findById(req.params.id);
   if (!user) throw ApiError.notFound("User not found");
   const before = snapshot(user);
