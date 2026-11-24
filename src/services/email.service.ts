@@ -42,6 +42,49 @@ export async function sendMail(mail: Mail) {
   }
 }
 
+// ─────────────────────── Protection against misuse ───────────────────────
+/*
+ * The enquiry form emails a confirmation to whatever address a visitor types, so a bot could use it to send our
+ * emails to strangers and get the mailbox blocked. These limits keep that small: each address can receive only a
+ * few emails from us per hour and per day, and the website as a whole can send only so many automatic emails per
+ * hour. When a limit is hit the email is skipped (the enquiry itself is still saved). In memory: it starts afresh
+ * when the API restarts, which is fine for a single process.
+ */
+const HOUR = 3600_000;
+const DAY = 24 * HOUR;
+const sent = new Map<string, number[]>();
+
+function underLimit(key: string, max: number, windowMs: number) {
+  const now = Date.now();
+  const recent = (sent.get(key) ?? []).filter((t) => now - t < windowMs);
+  if (recent.length >= max) {
+    sent.set(key, recent);
+    return false;
+  }
+  recent.push(now);
+  sent.set(key, recent);
+  return true;
+}
+
+setInterval(() => {
+  const cutoff = Date.now() - DAY;
+  for (const [key, times] of sent) if (!times.some((t) => t > cutoff)) sent.delete(key);
+}, 10 * 60_000).unref();
+
+/** Returns false (and logs) when this automatic email would go over a limit. `perHour`/`perDay` apply to one address. */
+function mayEmail(kind: string, to: string, perHour: number, perDay: number) {
+  const addr = to.trim().toLowerCase();
+  if (!underLimit(`${kind}:to:${addr}:h`, perHour, HOUR) || !underLimit(`${kind}:to:${addr}:d`, perDay, DAY)) {
+    logger.warn(`[email:limit] ${kind} to ${addr} skipped: too many emails to this address`);
+    return false;
+  }
+  if (!underLimit("auto:all", 60, HOUR)) {
+    logger.warn(`[email:limit] ${kind} skipped: the hourly limit for automatic emails is reached`);
+    return false;
+  }
+  return true;
+}
+
 // ─────────────────────────── Templates ───────────────────────────
 /** Escape user-provided text before putting it in HTML. */
 const esc = (s: string) => s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);
@@ -62,14 +105,16 @@ const button = (href: string, label: string) =>
   `<p><a href="${href}" style="display:inline-block;background:#101C2C;color:#F5F0E7;padding:12px 22px;border-radius:999px;text-decoration:none">${label}</a></p>`;
 
 export const emails = {
-  enquiryReceived: (to: string, name: string, ref: string) =>
+  enquiryReceived: async (to: string, name: string, ref: string) =>
+    mayEmail("enquiry", to, 2, 5) &&
     sendMail({
       to,
       subject: `We've received your request (${ref})`,
       html: layout(`Thank you, ${esc(name)}`, `<p>A OneVaya travel designer will reply with a tailored quote, usually within one working day.</p><p>Your reference: <b>${esc(ref)}</b></p>`),
     }),
 
-  newLeadForTeam: (ref: string, source: string, name: string, email: string) =>
+  newLeadForTeam: async (ref: string, source: string, name: string, email: string) =>
+    underLimit("team-leads", 120, HOUR) &&
     sendMail({
       to: env.TEAM_EMAIL,
       subject: `New lead ${ref} (${source})`,
@@ -91,7 +136,8 @@ export const emails = {
       html: layout(`Hello ${esc(name)}`, `<p><b>${esc(docName)}</b> is ready in My OneVaya.</p>${button(`${env.CLIENT_URL}/my-onevaya/documents`, "View documents")}`),
     }),
 
-  passwordReset: (to: string, name: string, link: string) =>
+  passwordReset: async (to: string, name: string, link: string) =>
+    mayEmail("reset", to, 3, 6) &&
     sendMail({
       to,
       subject: "Reset your OneVaya password",

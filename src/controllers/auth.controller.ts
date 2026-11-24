@@ -57,9 +57,14 @@ export async function me(req: Request, res: Response) {
   ok(res, user);
 }
 
-/** Always answers the same way, so it can't be used to discover which emails have accounts. */
+/**
+ * Answers the same way for unknown emails, so it can't be used to discover which emails have accounts.
+ * The one exception is an account that exists but is switched off: there it says so, because a reset link
+ * would never be sent and the person would otherwise wait for an email that doesn't come.
+ */
 export async function forgotPassword(req: Request, res: Response) {
-  const user = await User.findOne({ email: req.body.email, isActive: true });
+  const user = await User.findOne({ email: req.body.email });
+  if (user && !user.isActive) throw new ApiError(403, "Your account is inactive, so we can't send a reset link. Please contact us to reactivate it.");
   if (user) {
     const token = randomToken();
     user.set({ resetTokenHash: sha256(token), resetTokenExpires: new Date(Date.now() + 60 * 60 * 1000) });
